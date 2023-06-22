@@ -1,6 +1,11 @@
-int suma(int a, int b);
+int main() {
+  int a = 10;
+  int b = 5;
 
-int main()
-{
+  if ( a < 2 && b < 3) {
+
+    int v = 2;
+
+  }
   return 0;
 }
