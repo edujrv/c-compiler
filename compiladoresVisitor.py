@@ -89,5 +89,15 @@ class compiladoresVisitor(ParseTreeVisitor):
         return self.visitChildren(ctx)
 
 
+    # Visit a parse tree produced by compiladoresParser#bloque_case.
+    def visitBloque_case(self, ctx:compiladoresParser.Bloque_caseContext):
+        return self.visitChildren(ctx)
+
+
+    # Visit a parse tree produced by compiladoresParser#bloque_switch.
+    def visitBloque_switch(self, ctx:compiladoresParser.Bloque_switchContext):
+        return self.visitChildren(ctx)
+
+
 
 del compiladoresParser

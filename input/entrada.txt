@@ -1,8 +1,15 @@
 int main() {
-    do {
-    if (i == 10) {
-      int l=8;
-    } 
-  } while ( i < f );
+  switch (j) {
+    case 3:
+      a = 2;
+      break;
+    case 2:
+      b = 2;
+    case 1:
+      c = 2;
+      break;
+    default:
+      d=6;
+  }
   return 0;
 }

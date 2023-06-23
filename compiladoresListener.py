@@ -152,5 +152,23 @@ class compiladoresListener(ParseTreeListener):
         pass
 
 
+    # Enter a parse tree produced by compiladoresParser#bloque_case.
+    def enterBloque_case(self, ctx:compiladoresParser.Bloque_caseContext):
+        pass
+
+    # Exit a parse tree produced by compiladoresParser#bloque_case.
+    def exitBloque_case(self, ctx:compiladoresParser.Bloque_caseContext):
+        pass
+
+
+    # Enter a parse tree produced by compiladoresParser#bloque_switch.
+    def enterBloque_switch(self, ctx:compiladoresParser.Bloque_switchContext):
+        pass
+
+    # Exit a parse tree produced by compiladoresParser#bloque_switch.
+    def exitBloque_switch(self, ctx:compiladoresParser.Bloque_switchContext):
+        pass
+
+
 
 del compiladoresParser

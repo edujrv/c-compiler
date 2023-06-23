@@ -69,6 +69,7 @@ FOR: 'for';
 SWITCH: 'switch';
 DEFAULT: 'default';
 DO: 'do';
+CASE: 'case';
 
 
 NUMERO:
@@ -100,7 +101,7 @@ declaracion_funcion:
   (tipo | VOID) ID PAR_ABRE ((atributos COMA) | atributos)* PAR_CIERRE bloque;
 
 asignacion_variable:
-  ID ASIGNACION (NUMERO_DECIMAL | NUMERO | ID) PYC
+  ID ASIGNACION (NUMERO_DECIMAL | NUMERO | ID ) PYC
   // ID ASIGNACION ( TEXTO+ | NUMERO_DECIMAL | NUMERO) |PYC
   |ID ASIGNACION ( NUMERO_DECIMAL | NUMERO) (MAS | MENOS | ASTERISCO | BARRA) ( NUMERO_DECIMAL | NUMERO | ID) PYC;
 
@@ -121,6 +122,7 @@ sentencia:
   | bloque_for+
   | bloque_while+
   | bloque_do_while+
+  | bloque_switch+
 ;
 
 return_func:
@@ -180,6 +182,17 @@ bloque_do_while:
   | DO bloque WHILE PAR_ABRE '1' PAR_CIERRE PYC
   | DO bloque WHILE PAR_ABRE condicion PAR_CIERRE PYC
   ;
+
+bloque_case:
+  CASE NUMERO DOS_PUNTOS sentencia* BREAK PYC
+  | CASE '1' DOS_PUNTOS sentencia* BREAK PYC
+  | CASE NUMERO DOS_PUNTOS sentencia*
+  | DEFAULT DOS_PUNTOS sentencia* BREAK PYC
+  | DEFAULT DOS_PUNTOS sentencia*
+;
+bloque_switch:
+  SWITCH PAR_ABRE ID PAR_CIERRE LLAVE_ABRE bloque_case+ LLAVE_CIERRE
+;
 // TEXTO:
 //   LETRA+
 //   | DIGITO+
