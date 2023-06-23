@@ -6,6 +6,10 @@ int main() {
 
     int v = 2;
 
+  } else if (g == 9){
+    int l = 0;
+  } else {
+    k--;
   }
   return 0;
 }
