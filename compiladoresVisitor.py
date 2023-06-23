@@ -34,11 +34,6 @@ class compiladoresVisitor(ParseTreeVisitor):
         return self.visitChildren(ctx)
 
 
-    # Visit a parse tree produced by compiladoresParser#comentario.
-    def visitComentario(self, ctx:compiladoresParser.ComentarioContext):
-        return self.visitChildren(ctx)
-
-
     # Visit a parse tree produced by compiladoresParser#sentencia.
     def visitSentencia(self, ctx:compiladoresParser.SentenciaContext):
         return self.visitChildren(ctx)

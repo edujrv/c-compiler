@@ -71,6 +71,7 @@ DEFAULT: 'default';
 DO: 'do';
 CASE: 'case';
 
+COMENTARIO: '//' ~[\r\n]* -> skip;
 
 NUMERO:
 	DIGITO+
@@ -85,7 +86,7 @@ ID: (LETRA | GUION_BAJO) (LETRA | DIGITO | '_')*;
 
 
 declaracion_variable:
-  (CHAR) ID ASIGNACION PYC //TODO: VER QUE ONDA CON EL CHAR
+  (CHAR) ID ASIGNACION TEXTO PYC //TODO: VER QUE ONDA CON EL CHAR
   // (STRING) ID ASIGNACION TEXTO+ PYC //TODO: VER QUE ONDA CON EL CHAR
   | (FLOAT | DOUBLE) ID ASIGNACION NUMERO_DECIMAL PYC
   | (FLOAT | DOUBLE | INT) ID ASIGNACION NUMERO PYC
@@ -103,20 +104,22 @@ declaracion_funcion:
 asignacion_variable:
   ID ASIGNACION (NUMERO_DECIMAL | NUMERO | ID ) PYC
   // ID ASIGNACION ( TEXTO+ | NUMERO_DECIMAL | NUMERO) |PYC
-  |ID ASIGNACION ( NUMERO_DECIMAL | NUMERO) (MAS | MENOS | ASTERISCO | BARRA) ( NUMERO_DECIMAL | NUMERO | ID) PYC;
+  |ID ASIGNACION ( NUMERO_DECIMAL | NUMERO) (MAS | MENOS | ASTERISCO | BARRA) ( NUMERO_DECIMAL | NUMERO | ID) PYC
+  | ID ASIGNACION TEXTO PYC
+  ;
 
-comentario:
-  // BARRA{2} (TEXTO)+
-  // BARRA BARRA (TEXTO)+
-  BARRA BARRA
+// comentario:
+//   // BARRA{2} (TEXTO)+
+//   // BARRA BARRA (TEXTO)+
+//   BARRA ASTERISCO (sentencia | TEXTO+)* ASTERISCO BARRA 
 
-;
+// ;
 
 sentencia:
   declaracion_variable+
   | declaracion_funcion
   | asignacion_variable+
-  | comentario+
+  | COMENTARIO+
   | operacion 
   | bloque_if_else+
   | bloque_for+
@@ -193,6 +196,7 @@ bloque_case:
 bloque_switch:
   SWITCH PAR_ABRE ID PAR_CIERRE LLAVE_ABRE bloque_case+ LLAVE_CIERRE
 ;
-// TEXTO:
-//   LETRA+
-//   | DIGITO+
+TEXTO:
+  COMILLA_DOBLE (LETRA+ | DIGITO+)* COMILLA_DOBLE
+  | COMILLA_SIMPLE (LETRA+ | DIGITO+)* COMILLA_SIMPLE
+  ;

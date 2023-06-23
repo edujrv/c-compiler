@@ -53,15 +53,6 @@ class compiladoresListener(ParseTreeListener):
         pass
 
 
-    # Enter a parse tree produced by compiladoresParser#comentario.
-    def enterComentario(self, ctx:compiladoresParser.ComentarioContext):
-        pass
-
-    # Exit a parse tree produced by compiladoresParser#comentario.
-    def exitComentario(self, ctx:compiladoresParser.ComentarioContext):
-        pass
-
-
     # Enter a parse tree produced by compiladoresParser#sentencia.
     def enterSentencia(self, ctx:compiladoresParser.SentenciaContext):
         pass
