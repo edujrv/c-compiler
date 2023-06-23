@@ -79,11 +79,12 @@ ID: (LETRA | GUION_BAJO) (LETRA | DIGITO | '_')*;
 compiladores: statement+;
 
 statement:
-  declaracion_variable
-  | declaracion_funcion
-  | asignacion_variable
+  declaracion_variable PYC
+  | declaracion_funcion 
+  | asignacion_variable PYC
   | COMENTARIO
   | operacion
+  | bloque_if
   | bloque_if_else
   | bloque_for
   | bloque_while
@@ -93,7 +94,9 @@ statement:
   ;
 
 declaracion_variable:
-  (CHAR | FLOAT | DOUBLE | INT) ID ASIGNACION (TEXTO | NUMERO | NUMERO_DECIMAL) PYC
+  tipo ID ASIGNACION (TEXTO | NUMERO | NUMERO_DECIMAL)
+  // | tipo ID ASIGNACION (NUMERO | NUMERO_DECIMAL | ID) (MAS | MENOS | ASTERISCO | BARRA) (NUMERO | NUMERO_DECIMAL | ID)
+  | tipo ID ASIGNACION operacion+
   | tipo ID
   ;
 
@@ -116,8 +119,8 @@ declaracion_funcion:
   ;
 
 asignacion_variable:
-  ID ASIGNACION (TEXTO | NUMERO | NUMERO_DECIMAL) PYC
-  | ID ASIGNACION (NUMERO | NUMERO_DECIMAL | ID) (MAS | MENOS | ASTERISCO | BARRA) (NUMERO | NUMERO_DECIMAL | ID) PYC
+  ID ASIGNACION (TEXTO | NUMERO | NUMERO_DECIMAL)
+  | ID ASIGNACION (NUMERO | NUMERO_DECIMAL | ID) (MAS | MENOS | ASTERISCO | BARRA) (NUMERO | NUMERO_DECIMAL | ID)
   ;
 
 bloque:
@@ -149,8 +152,10 @@ bloque_if_else:
 operacion:
   ID SUMA_UNITARIA
   | ID RESTA_UNITARIA
-  | ID (MAS | MENOS | ASTERISCO | BARRA) ID
-  | ID (MAS | MENOS | ASTERISCO | BARRA) (NUMERO | NUMERO_DECIMAL)
+  // | ID ((MAS | MENOS | ASTERISCO | BARRA) ID)+
+  | (NUMERO | NUMERO_DECIMAL | ID) ((MAS | MENOS | ASTERISCO | BARRA) (NUMERO | NUMERO_DECIMAL | ID))+
+  // | ID ((MAS | MENOS | ASTERISCO | BARRA) (NUMERO | NUMERO_DECIMAL | ID))+
+  // | (NUMERO | NUMERO_DECIMAL) ((MAS | MENOS | ASTERISCO | BARRA) (NUMERO | NUMERO_DECIMAL))+
   ;
 
 bloque_for:
@@ -170,8 +175,8 @@ bloque_switch:
   ;
 
 bloque_case:
-  CASE (NUMERO | '1') DOS_PUNTOS statement* BREAK PYC
-  | DEFAULT DOS_PUNTOS statement* BREAK PYC
+  CASE (NUMERO | '1') DOS_PUNTOS statement* (BREAK PYC)?
+  | DEFAULT DOS_PUNTOS statement* (BREAK PYC)?
   ;
 
 TEXTO:
