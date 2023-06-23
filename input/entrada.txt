@@ -1,15 +1,8 @@
 int main() {
-  int a = 10;
-  int b = 5;
-
-  if ( a < 2 && b < 3) {
-
-    int v = 2;
-
-  } else if (g == 9){
-    int l = 0;
-  } else {
-    k--;
+  for ( i=0; i<10; i++){
+    if (i == 10) {
+      int l=8;
+    } 
   }
   return 0;
 }

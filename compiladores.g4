@@ -32,7 +32,7 @@ FLOAT: 'float';
 DOUBLE: 'double';
 BOOLEAN: 'bool'; //TODO: VER SI ES BOOL O BOOLEAN
 CHAR: 'char';
-STRING: 'string';
+// STRING: 'string';
 VOID: 'void';
 
 //OPERADORES
@@ -82,13 +82,14 @@ ID: (LETRA | GUION_BAJO) (LETRA | DIGITO | '_')*;
 
 
 declaracion_variable:
-  (STRING) ID ASIGNACION PYC //TODO: VER QUE ONDA CON EL CHAR
+  (CHAR) ID ASIGNACION PYC //TODO: VER QUE ONDA CON EL CHAR
   // (STRING) ID ASIGNACION TEXTO+ PYC //TODO: VER QUE ONDA CON EL CHAR
   | (FLOAT | DOUBLE) ID ASIGNACION NUMERO_DECIMAL PYC
-  | (FLOAT | DOUBLE | INT) ID ASIGNACION NUMERO PYC;
-
+  | (FLOAT | DOUBLE | INT) ID ASIGNACION NUMERO PYC
+  | tipo ID
+  ;
 tipo:
-  INT | FLOAT | STRING | CHAR | BOOLEAN; 
+  INT | FLOAT | CHAR | BOOLEAN; 
 
 atributos:
   tipo ID;
@@ -97,9 +98,9 @@ declaracion_funcion:
   (tipo | VOID) ID PAR_ABRE ((atributos COMA) | atributos)* PAR_CIERRE bloque;
 
 asignacion_variable:
-  ID ASIGNACION (NUMERO_DECIMAL | NUMERO) |PYC
+  ID ASIGNACION (NUMERO_DECIMAL | NUMERO | ID) PYC
   // ID ASIGNACION ( TEXTO+ | NUMERO_DECIMAL | NUMERO) |PYC
-  |ID ASIGNACION ( NUMERO_DECIMAL | NUMERO) (MAS | MENOS | ASTERISCO | BARRA) ( NUMERO_DECIMAL | NUMERO) PYC;
+  |ID ASIGNACION ( NUMERO_DECIMAL | NUMERO) (MAS | MENOS | ASTERISCO | BARRA) ( NUMERO_DECIMAL | NUMERO | ID) PYC;
 
 comentario:
   // BARRA{2} (TEXTO)+
@@ -115,6 +116,7 @@ sentencia:
   | comentario+
   | operacion 
   | bloque_if_else+
+  | bloque_for+
 ;
 
 return_func:
@@ -154,11 +156,13 @@ operacion:
 ;
 
 bloque_for:
-  FOR PAR_ABRE ((declaracion_variable | asignacion_variable) COMA*)+ PYC condicion PYC operacion PAR_CIERRE bloque
+  // FOR PAR_ABRE ((declaracion_variable | asignacion_variable) COMA*)+ PYC condicion PYC operacion PAR_CIERRE bloque
+  FOR PAR_ABRE PYC PYC PAR_CIERRE bloque
+  | FOR PAR_ABRE declaracion_variable condicion PYC operacion PAR_CIERRE bloque
+  | FOR PAR_ABRE asignacion_variable condicion PYC operacion PAR_CIERRE bloque
+
 ;
 
 // TEXTO:
 //   LETRA+
 //   | DIGITO+
-//   | WS+ LETRA+ WS+
-//   | WS+ DIGITO+ WS+;
