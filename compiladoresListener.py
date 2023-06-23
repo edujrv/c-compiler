@@ -134,5 +134,14 @@ class compiladoresListener(ParseTreeListener):
         pass
 
 
+    # Enter a parse tree produced by compiladoresParser#bloque_while.
+    def enterBloque_while(self, ctx:compiladoresParser.Bloque_whileContext):
+        pass
+
+    # Exit a parse tree produced by compiladoresParser#bloque_while.
+    def exitBloque_while(self, ctx:compiladoresParser.Bloque_whileContext):
+        pass
+
+
 
 del compiladoresParser

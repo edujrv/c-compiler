@@ -58,6 +58,8 @@ RETURN: 'return';
 BREAK: 'break';
 CONTINUE: 'continue';
 STATIC: 'static';
+TRUE: 'true';
+FALSE: 'false';
 
 //BLOQUES
 IF: 'if';
@@ -117,6 +119,7 @@ sentencia:
   | operacion 
   | bloque_if_else+
   | bloque_for+
+  | bloque_while+
 ;
 
 return_func:
@@ -163,6 +166,12 @@ bloque_for:
 
 ;
 
+bloque_while:
+  WHILE PAR_ABRE TRUE PAR_CIERRE bloque
+  | WHILE PAR_ABRE ID PAR_CIERRE bloque
+  | WHILE PAR_ABRE '1' PAR_CIERRE bloque
+  | WHILE PAR_ABRE condicion PAR_CIERRE bloque
+  ;
 // TEXTO:
 //   LETRA+
 //   | DIGITO+
