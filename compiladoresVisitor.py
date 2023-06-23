@@ -24,6 +24,16 @@ class compiladoresVisitor(ParseTreeVisitor):
         return self.visitChildren(ctx)
 
 
+    # Visit a parse tree produced by compiladoresParser#prototipado_funcion.
+    def visitPrototipado_funcion(self, ctx:compiladoresParser.Prototipado_funcionContext):
+        return self.visitChildren(ctx)
+
+
+    # Visit a parse tree produced by compiladoresParser#lista_parametro.
+    def visitLista_parametro(self, ctx:compiladoresParser.Lista_parametroContext):
+        return self.visitChildren(ctx)
+
+
     # Visit a parse tree produced by compiladoresParser#declaracion_funcion.
     def visitDeclaracion_funcion(self, ctx:compiladoresParser.Declaracion_funcionContext):
         return self.visitChildren(ctx)

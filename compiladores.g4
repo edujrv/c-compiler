@@ -98,6 +98,17 @@ tipo:
 atributos:
   tipo ID;
 
+
+prototipado_funcion: tipo ID PAR_ABRE lista_parametro? PAR_CIERRE PYC ;
+
+lista_parametro: atributos (COMA atributos)* ;
+
+
+
+
+
+
+
 declaracion_funcion:
   (tipo | VOID) ID PAR_ABRE ((atributos COMA) | atributos)* PAR_CIERRE bloque;
 
@@ -126,6 +137,7 @@ sentencia:
   | bloque_while+
   | bloque_do_while+
   | bloque_switch+
+  | prototipado_funcion
 ;
 
 return_func:
@@ -196,6 +208,7 @@ bloque_case:
 bloque_switch:
   SWITCH PAR_ABRE ID PAR_CIERRE LLAVE_ABRE bloque_case+ LLAVE_CIERRE
 ;
+
 TEXTO:
   COMILLA_DOBLE (LETRA+ | DIGITO+)* COMILLA_DOBLE
   | COMILLA_SIMPLE (LETRA+ | DIGITO+)* COMILLA_SIMPLE

@@ -1,5 +1,0 @@
-int main() {
-  // char testo = 'hola'; rqwerqwev 
-  char testo = 'hola';
-  return 0;
-}

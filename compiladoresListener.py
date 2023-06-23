@@ -35,6 +35,24 @@ class compiladoresListener(ParseTreeListener):
         pass
 
 
+    # Enter a parse tree produced by compiladoresParser#prototipado_funcion.
+    def enterPrototipado_funcion(self, ctx:compiladoresParser.Prototipado_funcionContext):
+        pass
+
+    # Exit a parse tree produced by compiladoresParser#prototipado_funcion.
+    def exitPrototipado_funcion(self, ctx:compiladoresParser.Prototipado_funcionContext):
+        pass
+
+
+    # Enter a parse tree produced by compiladoresParser#lista_parametro.
+    def enterLista_parametro(self, ctx:compiladoresParser.Lista_parametroContext):
+        pass
+
+    # Exit a parse tree produced by compiladoresParser#lista_parametro.
+    def exitLista_parametro(self, ctx:compiladoresParser.Lista_parametroContext):
+        pass
+
+
     # Enter a parse tree produced by compiladoresParser#declaracion_funcion.
     def enterDeclaracion_funcion(self, ctx:compiladoresParser.Declaracion_funcionContext):
         pass
