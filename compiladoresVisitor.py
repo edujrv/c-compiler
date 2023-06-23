@@ -84,5 +84,10 @@ class compiladoresVisitor(ParseTreeVisitor):
         return self.visitChildren(ctx)
 
 
+    # Visit a parse tree produced by compiladoresParser#bloque_do_while.
+    def visitBloque_do_while(self, ctx:compiladoresParser.Bloque_do_whileContext):
+        return self.visitChildren(ctx)
+
+
 
 del compiladoresParser

@@ -120,6 +120,7 @@ sentencia:
   | bloque_if_else+
   | bloque_for+
   | bloque_while+
+  | bloque_do_while+
 ;
 
 return_func:
@@ -171,6 +172,13 @@ bloque_while:
   | WHILE PAR_ABRE ID PAR_CIERRE bloque
   | WHILE PAR_ABRE '1' PAR_CIERRE bloque
   | WHILE PAR_ABRE condicion PAR_CIERRE bloque
+  ;
+
+bloque_do_while:
+  DO bloque WHILE PAR_ABRE TRUE PAR_CIERRE PYC
+  | DO bloque WHILE PAR_ABRE ID PAR_CIERRE PYC
+  | DO bloque WHILE PAR_ABRE '1' PAR_CIERRE PYC
+  | DO bloque WHILE PAR_ABRE condicion PAR_CIERRE PYC
   ;
 // TEXTO:
 //   LETRA+

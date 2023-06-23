@@ -1,8 +1,8 @@
 int main() {
-  while ( 1 ){
+    do {
     if (i == 10) {
       int l=8;
     } 
-  }
+  } while ( i < f );
   return 0;
 }
