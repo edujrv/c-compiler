@@ -8,6 +8,24 @@ else:
 # This class defines a complete listener for a parse tree produced by compiladoresParser.
 class compiladoresListener(ParseTreeListener):
 
+    # Enter a parse tree produced by compiladoresParser#compiladores.
+    def enterCompiladores(self, ctx:compiladoresParser.CompiladoresContext):
+        pass
+
+    # Exit a parse tree produced by compiladoresParser#compiladores.
+    def exitCompiladores(self, ctx:compiladoresParser.CompiladoresContext):
+        pass
+
+
+    # Enter a parse tree produced by compiladoresParser#statement.
+    def enterStatement(self, ctx:compiladoresParser.StatementContext):
+        pass
+
+    # Exit a parse tree produced by compiladoresParser#statement.
+    def exitStatement(self, ctx:compiladoresParser.StatementContext):
+        pass
+
+
     # Enter a parse tree produced by compiladoresParser#declaracion_variable.
     def enterDeclaracion_variable(self, ctx:compiladoresParser.Declaracion_variableContext):
         pass
@@ -71,12 +89,12 @@ class compiladoresListener(ParseTreeListener):
         pass
 
 
-    # Enter a parse tree produced by compiladoresParser#sentencia.
-    def enterSentencia(self, ctx:compiladoresParser.SentenciaContext):
+    # Enter a parse tree produced by compiladoresParser#bloque.
+    def enterBloque(self, ctx:compiladoresParser.BloqueContext):
         pass
 
-    # Exit a parse tree produced by compiladoresParser#sentencia.
-    def exitSentencia(self, ctx:compiladoresParser.SentenciaContext):
+    # Exit a parse tree produced by compiladoresParser#bloque.
+    def exitBloque(self, ctx:compiladoresParser.BloqueContext):
         pass
 
 
@@ -86,15 +104,6 @@ class compiladoresListener(ParseTreeListener):
 
     # Exit a parse tree produced by compiladoresParser#return_func.
     def exitReturn_func(self, ctx:compiladoresParser.Return_funcContext):
-        pass
-
-
-    # Enter a parse tree produced by compiladoresParser#bloque.
-    def enterBloque(self, ctx:compiladoresParser.BloqueContext):
-        pass
-
-    # Exit a parse tree produced by compiladoresParser#bloque.
-    def exitBloque(self, ctx:compiladoresParser.BloqueContext):
         pass
 
 
@@ -161,21 +170,21 @@ class compiladoresListener(ParseTreeListener):
         pass
 
 
-    # Enter a parse tree produced by compiladoresParser#bloque_case.
-    def enterBloque_case(self, ctx:compiladoresParser.Bloque_caseContext):
-        pass
-
-    # Exit a parse tree produced by compiladoresParser#bloque_case.
-    def exitBloque_case(self, ctx:compiladoresParser.Bloque_caseContext):
-        pass
-
-
     # Enter a parse tree produced by compiladoresParser#bloque_switch.
     def enterBloque_switch(self, ctx:compiladoresParser.Bloque_switchContext):
         pass
 
     # Exit a parse tree produced by compiladoresParser#bloque_switch.
     def exitBloque_switch(self, ctx:compiladoresParser.Bloque_switchContext):
+        pass
+
+
+    # Enter a parse tree produced by compiladoresParser#bloque_case.
+    def enterBloque_case(self, ctx:compiladoresParser.Bloque_caseContext):
+        pass
+
+    # Exit a parse tree produced by compiladoresParser#bloque_case.
+    def exitBloque_case(self, ctx:compiladoresParser.Bloque_caseContext):
         pass
 
 

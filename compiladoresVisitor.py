@@ -9,6 +9,16 @@ else:
 
 class compiladoresVisitor(ParseTreeVisitor):
 
+    # Visit a parse tree produced by compiladoresParser#compiladores.
+    def visitCompiladores(self, ctx:compiladoresParser.CompiladoresContext):
+        return self.visitChildren(ctx)
+
+
+    # Visit a parse tree produced by compiladoresParser#statement.
+    def visitStatement(self, ctx:compiladoresParser.StatementContext):
+        return self.visitChildren(ctx)
+
+
     # Visit a parse tree produced by compiladoresParser#declaracion_variable.
     def visitDeclaracion_variable(self, ctx:compiladoresParser.Declaracion_variableContext):
         return self.visitChildren(ctx)
@@ -44,18 +54,13 @@ class compiladoresVisitor(ParseTreeVisitor):
         return self.visitChildren(ctx)
 
 
-    # Visit a parse tree produced by compiladoresParser#sentencia.
-    def visitSentencia(self, ctx:compiladoresParser.SentenciaContext):
+    # Visit a parse tree produced by compiladoresParser#bloque.
+    def visitBloque(self, ctx:compiladoresParser.BloqueContext):
         return self.visitChildren(ctx)
 
 
     # Visit a parse tree produced by compiladoresParser#return_func.
     def visitReturn_func(self, ctx:compiladoresParser.Return_funcContext):
-        return self.visitChildren(ctx)
-
-
-    # Visit a parse tree produced by compiladoresParser#bloque.
-    def visitBloque(self, ctx:compiladoresParser.BloqueContext):
         return self.visitChildren(ctx)
 
 
@@ -94,13 +99,13 @@ class compiladoresVisitor(ParseTreeVisitor):
         return self.visitChildren(ctx)
 
 
-    # Visit a parse tree produced by compiladoresParser#bloque_case.
-    def visitBloque_case(self, ctx:compiladoresParser.Bloque_caseContext):
+    # Visit a parse tree produced by compiladoresParser#bloque_switch.
+    def visitBloque_switch(self, ctx:compiladoresParser.Bloque_switchContext):
         return self.visitChildren(ctx)
 
 
-    # Visit a parse tree produced by compiladoresParser#bloque_switch.
-    def visitBloque_switch(self, ctx:compiladoresParser.Bloque_switchContext):
+    # Visit a parse tree produced by compiladoresParser#bloque_case.
+    def visitBloque_case(self, ctx:compiladoresParser.Bloque_caseContext):
         return self.visitChildren(ctx)
 
 
