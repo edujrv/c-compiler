@@ -42,9 +42,15 @@ class TablaSimbolos:
                 return context[key]
         return False
 
+    # def __str__(self):
+    #     attributes = [
+    #         f"ts[{i}] -> {context}" for i, context in enumerate(self.ts)
+    #     ]
+    #     return "\n".join(attributes)
+    
 
 class Id:
-    def __init__(self,name, type):
+    def __init__(self, name, type):
         self.name = name
         self.type = type
         self.initialized = False
@@ -52,8 +58,11 @@ class Id:
         self.varFunc = "variable"  #indica si es una VARIABLE o una FUNCION
         
     def toString(self):
-        return f'(name->{self.name},type->{self.type},init->{self.initialized},used->{self.used},varFun->{self.varFunc})'
-    
+        return f'[Name: {self.name}, Type: {self.type}, Init: {self.initialized}, Used: {self.used}, VarFun: {self.varFunc}]'
+
+    # def __str__(self):
+        # return f'(name->{self.name},type->{self.type},init->{self.initialized},used->{self.used},varFun->{self.varFunc})'
+        # return f'[Name: {self.name}, Type: {self.type}, Init: {self.initialized}, Used: {self.used}, VarFun: {self.varFunc}]'
 
 class Variable(Id):
     pass

@@ -1,4 +1,4 @@
-# Generated from /home/edu/workspaces/facu/dhs/c-compiler/compiladores.g4 by ANTLR 4.9.2
+# Generated from /home/marcos/Descargas/dhs/c-compiler/compiladores.g4 by ANTLR 4.9.2
 from antlr4 import *
 if __name__ is not None and "." in __name__:
     from .compiladoresParser import compiladoresParser
@@ -16,6 +16,11 @@ class compiladoresVisitor(ParseTreeVisitor):
 
     # Visit a parse tree produced by compiladoresParser#statement.
     def visitStatement(self, ctx:compiladoresParser.StatementContext):
+        return self.visitChildren(ctx)
+
+
+    # Visit a parse tree produced by compiladoresParser#bloques.
+    def visitBloques(self, ctx:compiladoresParser.BloquesContext):
         return self.visitChildren(ctx)
 
 
@@ -41,6 +46,11 @@ class compiladoresVisitor(ParseTreeVisitor):
 
     # Visit a parse tree produced by compiladoresParser#lista_parametro.
     def visitLista_parametro(self, ctx:compiladoresParser.Lista_parametroContext):
+        return self.visitChildren(ctx)
+
+
+    # Visit a parse tree produced by compiladoresParser#id_funcion.
+    def visitId_funcion(self, ctx:compiladoresParser.Id_funcionContext):
         return self.visitChildren(ctx)
 
 

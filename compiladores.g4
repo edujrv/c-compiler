@@ -71,8 +71,8 @@ DEFAULT: 'default';
 DO: 'do';
 CASE: 'case';
 
-// NUMERO: DIGITO+ | '-' DIGITO+;
-// NUMERO_DECIMAL: DIGITO+ PUNTO DIGITO+ | '-' DIGITO+ PUNTO DIGITO+;
+NUMERO: DIGITO+ | '-' DIGITO+;
+NUMERO_DECIMAL: DIGITO+ PUNTO DIGITO+ | '-' DIGITO+ PUNTO DIGITO+;
 
 // NUMERO: ('-')? DIGITO+;
 // NUMERO_DECIMAL: ('-')? DIGITO+ PUNTO DIGITO+;
@@ -83,17 +83,27 @@ compiladores: prototipado_funcion* statement+ ;
 
 statement:
   declaracion_variable PYC
-  | declaracion_funcion 
+  // | declaracion_funcion 
   | asignacion_variable PYC
   | COMENTARIO
   | operacion
-  | bloque_if
+  | bloques
+  // | bloque_if
+  // | bloque_if_else
+  // | bloque_for
+  // | bloque_while
+  // | bloque_do_while
+  // | bloque_switch
+  // | prototipado_funcion
+  ;
+bloques:
+  bloque_if
   | bloque_if_else
   | bloque_for
   | bloque_while
   | bloque_do_while
   | bloque_switch
-  // | prototipado_funcion
+  | declaracion_funcion
   ;
 
 declaracion_variable:
@@ -109,15 +119,28 @@ atributos:
   tipo ID;
 
 prototipado_funcion:
-  (tipo | VOID) ID PAR_ABRE lista_parametro? PAR_CIERRE PYC
+  // (tipo | VOID) ID PAR_ABRE lista_parametro? PAR_CIERRE PYC
+  id_funcion PYC
   ;
 
-lista_parametro:
-  atributos (COMA atributos)*
-  ;
+// lista_parametro:
+//   atributos (COMA atributos)*
+//   ;
+  
+lista_parametro: 
+	  tipo ID COMA lista_parametro
+	| tipo ID lista_parametro
+	| tipo COMA lista_parametro
+	| tipo lista_parametro
+	;	
+
+id_funcion:
+  (tipo | VOID) ID PAR_ABRE lista_parametro? PAR_CIERRE
+;
 
 declaracion_funcion:
-  (tipo | VOID) ID PAR_ABRE (atributos (COMA atributos)*)? PAR_CIERRE bloque
+// (tipo | VOID) ID PAR_ABRE lista_parametro? PAR_CIERRE bloque
+  id_funcion bloque
   ;
 
 asignacion_variable:
@@ -193,7 +216,7 @@ TEXTO:
   | COMILLA_SIMPLE (LETRA | DIGITO)* COMILLA_SIMPLE
   ;
 
-NUMERO: ('-')? DIGITO+;
-NUMERO_DECIMAL: ('-')? DIGITO+ PUNTO DIGITO+;
+// NUMERO: ('-')? DIGITO+;
+// NUMERO_DECIMAL: ('-')? DIGITO+ PUNTO DIGITO+;
 
 COMENTARIO: '//' ~[\r\n]* -> skip;

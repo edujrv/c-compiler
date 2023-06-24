@@ -1,4 +1,4 @@
-# Generated from /home/edu/workspaces/facu/dhs/c-compiler/compiladores.g4 by ANTLR 4.9.2
+# Generated from /home/marcos/Descargas/dhs/c-compiler/compiladores.g4 by ANTLR 4.9.2
 from antlr4 import *
 if __name__ is not None and "." in __name__:
     from .compiladoresParser import compiladoresParser
@@ -23,6 +23,15 @@ class compiladoresListener(ParseTreeListener):
 
     # Exit a parse tree produced by compiladoresParser#statement.
     def exitStatement(self, ctx:compiladoresParser.StatementContext):
+        pass
+
+
+    # Enter a parse tree produced by compiladoresParser#bloques.
+    def enterBloques(self, ctx:compiladoresParser.BloquesContext):
+        pass
+
+    # Exit a parse tree produced by compiladoresParser#bloques.
+    def exitBloques(self, ctx:compiladoresParser.BloquesContext):
         pass
 
 
@@ -68,6 +77,15 @@ class compiladoresListener(ParseTreeListener):
 
     # Exit a parse tree produced by compiladoresParser#lista_parametro.
     def exitLista_parametro(self, ctx:compiladoresParser.Lista_parametroContext):
+        pass
+
+
+    # Enter a parse tree produced by compiladoresParser#id_funcion.
+    def enterId_funcion(self, ctx:compiladoresParser.Id_funcionContext):
+        pass
+
+    # Exit a parse tree produced by compiladoresParser#id_funcion.
+    def exitId_funcion(self, ctx:compiladoresParser.Id_funcionContext):
         pass
 
 
