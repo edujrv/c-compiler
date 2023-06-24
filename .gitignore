@@ -2,6 +2,8 @@
 #*
 target
 .antlr
+.vscode
+env/
 __pycache__
 compiladores*.java
 compiladores*.py
