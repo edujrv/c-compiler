@@ -76,7 +76,7 @@ NUMERO_DECIMAL: DIGITO+ PUNTO DIGITO+ | '-' DIGITO+ PUNTO DIGITO+;
 
 ID: (LETRA | GUION_BAJO) (LETRA | DIGITO | '_')*;
 
-compiladores: statement+;
+compiladores: prototipado_funcion* statement+ ;
 
 statement:
   declaracion_variable PYC
@@ -90,7 +90,7 @@ statement:
   | bloque_while
   | bloque_do_while
   | bloque_switch
-  | prototipado_funcion
+  // | prototipado_funcion
   ;
 
 declaracion_variable:
@@ -107,7 +107,7 @@ atributos:
   tipo ID;
 
 prototipado_funcion:
-  tipo ID PAR_ABRE lista_parametro? PAR_CIERRE PYC
+  (tipo | VOID) ID PAR_ABRE lista_parametro? PAR_CIERRE PYC
   ;
 
 lista_parametro:
@@ -129,6 +129,7 @@ bloque:
 
 return_func:
   RETURN (ID | NUMERO | NUMERO_DECIMAL) PYC
+  | RETURN operacion PYC
   ;
 
 condicion:
