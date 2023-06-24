@@ -71,8 +71,11 @@ DEFAULT: 'default';
 DO: 'do';
 CASE: 'case';
 
-NUMERO: DIGITO+ | '-' DIGITO+;
-NUMERO_DECIMAL: DIGITO+ PUNTO DIGITO+ | '-' DIGITO+ PUNTO DIGITO+;
+// NUMERO: DIGITO+ | '-' DIGITO+;
+// NUMERO_DECIMAL: DIGITO+ PUNTO DIGITO+ | '-' DIGITO+ PUNTO DIGITO+;
+
+// NUMERO: ('-')? DIGITO+;
+// NUMERO_DECIMAL: ('-')? DIGITO+ PUNTO DIGITO+;
 
 ID: (LETRA | GUION_BAJO) (LETRA | DIGITO | '_')*;
 
@@ -94,11 +97,10 @@ statement:
   ;
 
 declaracion_variable:
-  tipo ID ASIGNACION (TEXTO | NUMERO | NUMERO_DECIMAL)
-  // | tipo ID ASIGNACION (NUMERO | NUMERO_DECIMAL | ID) (MAS | MENOS | ASTERISCO | BARRA) (NUMERO | NUMERO_DECIMAL | ID)
-  | tipo ID ASIGNACION operacion+
+  tipo ID ASIGNACION (TEXTO | NUMERO | NUMERO_DECIMAL | TRUE | FALSE | operacion+)
   | tipo ID
   ;
+
 
 tipo:
   INT | FLOAT | CHAR | BOOLEAN;
@@ -128,7 +130,7 @@ bloque:
   ;
 
 return_func:
-  RETURN (ID | NUMERO | NUMERO_DECIMAL) PYC
+  RETURN (ID | NUMERO | NUMERO_DECIMAL | TRUE | FALSE) PYC
   | RETURN operacion PYC
   ;
 
@@ -139,6 +141,8 @@ condicion:
   | (NUMERO | NUMERO_DECIMAL) (MENOR | MENOR_IGUAL | MAYOR | MAYOR_IGUAL | IGUALDAD | DISTINTO) (NUMERO | NUMERO_DECIMAL)
   | condicion AND condicion
   | condicion OR condicion
+  | TRUE
+  | FALSE
   ;
 
 bloque_if:
@@ -150,13 +154,17 @@ bloque_if_else:
   | bloque_if ELSE bloque_if_else
   ;
 
+bloque_operacional:
+  PAR_ABRE operacion PAR_CIERRE
+;
 operacion:
   ID SUMA_UNITARIA
   | ID RESTA_UNITARIA
   // | ID ((MAS | MENOS | ASTERISCO | BARRA) ID)+
-  | (NUMERO | NUMERO_DECIMAL | ID) ((MAS | MENOS | ASTERISCO | BARRA) (NUMERO | NUMERO_DECIMAL | ID))+
+  | (NUMERO | NUMERO_DECIMAL | ID | bloque_operacional) ((MAS | MENOS | ASTERISCO | BARRA | PROCENTAJE) (NUMERO | NUMERO_DECIMAL | ID | bloque_operacional))+
   // | ID ((MAS | MENOS | ASTERISCO | BARRA) (NUMERO | NUMERO_DECIMAL | ID))+
   // | (NUMERO | NUMERO_DECIMAL) ((MAS | MENOS | ASTERISCO | BARRA) (NUMERO | NUMERO_DECIMAL))+
+  // | bloque_operacional
   ;
 
 bloque_for:
@@ -184,5 +192,8 @@ TEXTO:
   COMILLA_DOBLE (LETRA | DIGITO)* COMILLA_DOBLE
   | COMILLA_SIMPLE (LETRA | DIGITO)* COMILLA_SIMPLE
   ;
+
+NUMERO: ('-')? DIGITO+;
+NUMERO_DECIMAL: ('-')? DIGITO+ PUNTO DIGITO+;
 
 COMENTARIO: '//' ~[\r\n]* -> skip;

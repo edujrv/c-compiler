@@ -134,6 +134,15 @@ class compiladoresListener(ParseTreeListener):
         pass
 
 
+    # Enter a parse tree produced by compiladoresParser#bloque_operacional.
+    def enterBloque_operacional(self, ctx:compiladoresParser.Bloque_operacionalContext):
+        pass
+
+    # Exit a parse tree produced by compiladoresParser#bloque_operacional.
+    def exitBloque_operacional(self, ctx:compiladoresParser.Bloque_operacionalContext):
+        pass
+
+
     # Enter a parse tree produced by compiladoresParser#operacion.
     def enterOperacion(self, ctx:compiladoresParser.OperacionContext):
         pass
