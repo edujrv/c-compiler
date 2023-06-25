@@ -18,7 +18,7 @@ def main(argv):
     listener = customListener()
     parser.addParseListener(listener)
     # tree = parser.s()
-    tree = parser.compiladores()
+    tree = parser.programa()
     # print(tree.toStringTree(recog=parser)) #esto seria el compiladores
 
 if __name__ == '__main__':

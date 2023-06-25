@@ -107,7 +107,7 @@ bloques:
   | bloque_while
   | bloque_do_while
   | bloque_switch
-  | bloque
+  // | bloque
 ;
 
 declaracion_variable:
@@ -120,16 +120,16 @@ declaracion_variable:
 tipo:
   INT | FLOAT | CHAR | BOOLEAN;
 
-parametro:
+argumento:
   tipo ID;
 
 prototipado_funcion:
-  (tipo | VOID) ID PAR_ABRE (lista_argumento | ) PAR_CIERRE PYC
+  cabecera_funcion PYC
   ;
 
 lista_argumento:
-  parametro
-  | parametro COMA lista_argumento
+  argumento
+  | argumento COMA lista_argumento
   ;
 
 cabecera_funcion:
@@ -142,13 +142,14 @@ declaracion_funcion:
 argumentos:
   ID
   | ID COMA argumentos
-  | NUMERO COMA parametro 
+  | NUMERO COMA argumento 
   | NUMERO
+  |
 ;
 
 llamada_funcion:
   ID PAR_ABRE argumentos PAR_CIERRE PYC
-  | ID PAR_ABRE PAR_CIERRE PYC
+  | ID ASIGNACION PAR_ABRE argumentos PAR_CIERRE PYC
 
 ;
 

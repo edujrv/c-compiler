@@ -34,6 +34,17 @@ class TablaSimbolos:
             if key in context:
                 return True
         return False
+
+    def getDicByKey(self,key):
+        """busca un ID en todos los diccionarios de la lista y delvuelve el index del diccionario"""
+        #print(f'TS -> {self.ts}')
+        #print(f'TS -> key:{key}')
+        i = -1;
+        for context in self.ts:
+            i = i + 1
+            if key in context:
+                return i
+        return False
     
     def returnKey(self,key):
         """devuelve el ID, retorna False si no se encuentra"""
