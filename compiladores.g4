@@ -71,43 +71,44 @@ DEFAULT: 'default';
 DO: 'do';
 CASE: 'case';
 
-NUMERO: DIGITO+ | '-' DIGITO+;
-NUMERO_DECIMAL: DIGITO+ PUNTO DIGITO+ | '-' DIGITO+ PUNTO DIGITO+;
+// NUMERO: DIGITO+ | '-' DIGITO+;
+// NUMERO_DECIMAL: DIGITO+ PUNTO DIGITO+ | '-' DIGITO+ PUNTO DIGITO+;
 
-// NUMERO: ('-')? DIGITO+;
+NUMERO: 
+  DIGITO+
+  | MENOS DIGITO+
+  | DIGITO+ PUNTO DIGITO+
+  | MENOS DIGITO+ PUNTO DIGITO+
+;
 // NUMERO_DECIMAL: ('-')? DIGITO+ PUNTO DIGITO+;
 
 ID: (LETRA | GUION_BAJO) (LETRA | DIGITO | '_')*;
 
-compiladores: prototipado_funcion* statement+ ;
+programa: instrucciones EOF;
 
-statement:
+// compiladores: prototipado_funcion* instruccion+ ;
+
+instrucciones: instruccion instrucciones |;
+
+instruccion:
   declaracion_variable PYC
-  // | declaracion_funcion 
+  | declaracion_funcion 
   | asignacion_variable PYC
   | COMENTARIO
-  | operacion
-  | bloques
-  // | bloque_if
-  // | bloque_if_else
-  // | bloque_for
-  // | bloque_while
-  // | bloque_do_while
-  // | bloque_switch
-  // | prototipado_funcion
-  ;
-bloques:
-  bloque_if
+  | operacion PYC
+  | bloque_if
   | bloque_if_else
   | bloque_for
   | bloque_while
   | bloque_do_while
   | bloque_switch
-  | declaracion_funcion
+  | bloque
+  | prototipado_funcion
   ;
 
 declaracion_variable:
-  tipo ID ASIGNACION (TEXTO | NUMERO | NUMERO_DECIMAL | TRUE | FALSE | operacion+)
+  tipo ID ASIGNACION (TEXTO | NUMERO | TRUE | FALSE | operacion)
+  // tipo ID ASIGNACION (NUMERO | TRUE | FALSE | operacion)
   | tipo ID
   ;
 
@@ -115,57 +116,63 @@ declaracion_variable:
 tipo:
   INT | FLOAT | CHAR | BOOLEAN;
 
-atributos:
+parametro:
   tipo ID;
 
 prototipado_funcion:
-  // (tipo | VOID) ID PAR_ABRE lista_parametro? PAR_CIERRE PYC
-  id_funcion PYC
+  (tipo | VOID) ID PAR_ABRE (lista_argumento | ) PAR_CIERRE PYC
   ;
 
-// lista_parametro:
-//   atributos (COMA atributos)*
-//   ;
-  
-lista_parametro: 
-	  tipo ID COMA lista_parametro
-	| tipo ID lista_parametro
-	| tipo COMA lista_parametro
-	| tipo lista_parametro
-	;	
-
-id_funcion:
-  (tipo | VOID) ID PAR_ABRE lista_parametro? PAR_CIERRE
-;
+lista_argumento:
+  parametro
+  | parametro COMA lista_argumento
+  ;
 
 declaracion_funcion:
-// (tipo | VOID) ID PAR_ABRE lista_parametro? PAR_CIERRE bloque
-  id_funcion bloque
+  (tipo | VOID) ID PAR_ABRE (lista_argumento | ) PAR_CIERRE bloque
   ;
 
+argumentos:
+  ID
+  | ID COMA argumentos
+  | NUMERO COMA parametro 
+  | NUMERO
+;
+
+llamada_funcion:
+  ID PAR_ABRE argumentos PAR_CIERRE PYC
+  | ID PAR_ABRE PAR_CIERRE PYC
+
+;
+
 asignacion_variable:
-  ID ASIGNACION (TEXTO | NUMERO | NUMERO_DECIMAL)
-  | ID ASIGNACION (NUMERO | NUMERO_DECIMAL | ID) (MAS | MENOS | ASTERISCO | BARRA) (NUMERO | NUMERO_DECIMAL | ID)
+  // ID ASIGNACION (NUMERO )
+  ID ASIGNACION (NUMERO | TEXTO)
+  // | ID ASIGNACION (NUMERO | ID) (MAS | MENOS | ASTERISCO | BARRA) (NUMERO | ID)
+  | ID ASIGNACION operacion
   ;
 
 bloque:
-  LLAVE_ABRE statement* return_func? LLAVE_CIERRE
+  LLAVE_ABRE instrucciones return_func LLAVE_CIERRE
+  | LLAVE_ABRE instrucciones  LLAVE_CIERRE
   ;
 
 return_func:
-  RETURN (ID | NUMERO | NUMERO_DECIMAL | TRUE | FALSE) PYC
+  RETURN (ID | NUMERO | TRUE | FALSE) PYC
   | RETURN operacion PYC
+  | RETURN PYC
   ;
 
 condicion:
-  ID (MENOR | MENOR_IGUAL | MAYOR | MAYOR_IGUAL | IGUALDAD | DISTINTO) ID
-  | (NUMERO | NUMERO_DECIMAL) (MENOR | MENOR_IGUAL | MAYOR | MAYOR_IGUAL | IGUALDAD | DISTINTO) ID
-  | ID (MENOR | MENOR_IGUAL | MAYOR | MAYOR_IGUAL | IGUALDAD | DISTINTO) (NUMERO | NUMERO_DECIMAL)
-  | (NUMERO | NUMERO_DECIMAL) (MENOR | MENOR_IGUAL | MAYOR | MAYOR_IGUAL | IGUALDAD | DISTINTO) (NUMERO | NUMERO_DECIMAL)
+  ID (MENOR | MENOR_IGUAL | MAYOR | MAYOR_IGUAL | IGUALDAD | DISTINTO ) ID
+  | NUMERO (MENOR | MENOR_IGUAL | MAYOR | MAYOR_IGUAL | IGUALDAD | DISTINTO) ID
+  | ID (MENOR | MENOR_IGUAL | MAYOR | MAYOR_IGUAL | IGUALDAD | DISTINTO) NUMERO
+  | NUMERO (MENOR | MENOR_IGUAL | MAYOR | MAYOR_IGUAL | IGUALDAD | DISTINTO) NUMERO
   | condicion AND condicion
   | condicion OR condicion
   | TRUE
   | FALSE
+  | ID
   ;
 
 bloque_if:
@@ -184,7 +191,7 @@ operacion:
   ID SUMA_UNITARIA
   | ID RESTA_UNITARIA
   // | ID ((MAS | MENOS | ASTERISCO | BARRA) ID)+
-  | (NUMERO | NUMERO_DECIMAL | ID | bloque_operacional) ((MAS | MENOS | ASTERISCO | BARRA | PROCENTAJE) (NUMERO | NUMERO_DECIMAL | ID | bloque_operacional))+
+  | (NUMERO | ID | bloque_operacional) ((MAS | MENOS | ASTERISCO | BARRA | PROCENTAJE) (NUMERO | ID | bloque_operacional))+
   // | ID ((MAS | MENOS | ASTERISCO | BARRA) (NUMERO | NUMERO_DECIMAL | ID))+
   // | (NUMERO | NUMERO_DECIMAL) ((MAS | MENOS | ASTERISCO | BARRA) (NUMERO | NUMERO_DECIMAL))+
   // | bloque_operacional
@@ -192,6 +199,9 @@ operacion:
 
 bloque_for:
   FOR PAR_ABRE (declaracion_variable | asignacion_variable)? PYC condicion? PYC operacion? PAR_CIERRE bloque
+  | FOR PAR_ABRE (declaracion_variable | asignacion_variable) (COMA (declaracion_variable | asignacion_variable))* PYC 
+                  condicion (COMA condicion)* PYC 
+                  operacion (COMA operacion)* PAR_CIERRE bloque
   ;
 
 bloque_while:
@@ -207,16 +217,13 @@ bloque_switch:
   ;
 
 bloque_case:
-  CASE (NUMERO | '1') DOS_PUNTOS statement* (BREAK PYC)?
-  | DEFAULT DOS_PUNTOS statement* (BREAK PYC)?
+  CASE NUMERO DOS_PUNTOS instruccion* (BREAK PYC)?
+  | DEFAULT DOS_PUNTOS instruccion* (BREAK PYC)?
   ;
 
 TEXTO:
   COMILLA_DOBLE (LETRA | DIGITO)* COMILLA_DOBLE
   | COMILLA_SIMPLE (LETRA | DIGITO)* COMILLA_SIMPLE
   ;
-
-// NUMERO: ('-')? DIGITO+;
-// NUMERO_DECIMAL: ('-')? DIGITO+ PUNTO DIGITO+;
 
 COMENTARIO: '//' ~[\r\n]* -> skip;
