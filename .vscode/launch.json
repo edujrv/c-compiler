@@ -14,7 +14,7 @@
             // Archivo a parsear
             "input": "input/entrada.c",
             // Simbolo inicial
-            "startRule": "compiladores",
+            "startRule": "programa",
             // Muestra Arbol Sintactico
             "printParseTree": true,
             "visualParseTree": true

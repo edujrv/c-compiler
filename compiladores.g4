@@ -92,19 +92,23 @@ instrucciones: instruccion instrucciones |;
 
 instruccion:
   declaracion_variable PYC
-  | declaracion_funcion 
   | asignacion_variable PYC
   | COMENTARIO
   | operacion PYC
-  | bloque_if
+  | prototipado_funcion
+  | bloques
+  ;
+
+bloques:
+  bloque_if
+  | declaracion_funcion 
   | bloque_if_else
   | bloque_for
   | bloque_while
   | bloque_do_while
   | bloque_switch
   | bloque
-  | prototipado_funcion
-  ;
+;
 
 declaracion_variable:
   tipo ID ASIGNACION (TEXTO | NUMERO | TRUE | FALSE | operacion)
@@ -128,8 +132,11 @@ lista_argumento:
   | parametro COMA lista_argumento
   ;
 
+cabecera_funcion:
+  (tipo | VOID) ID PAR_ABRE (lista_argumento | ) PAR_CIERRE;
+  
 declaracion_funcion:
-  (tipo | VOID) ID PAR_ABRE (lista_argumento | ) PAR_CIERRE bloque
+  cabecera_funcion bloque
   ;
 
 argumentos:
