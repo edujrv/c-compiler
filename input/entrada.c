@@ -1,19 +1,19 @@
 // int funcion();
 // void funcion2(int a);
-// int suma(int a, int b);
+int suma(int a, int b);
 
 int global = 3;
 int main() {
-    int p;
-    int t;
+    // int p;
+    // int t;
 
-    for (int i = 2; i <= 5; i++) {
-        int x = 0;
-    }
-    if (p < 5){
-        int j ;
-        j = t + 15;
-    }
+    // for (int i = 2; i <= 5; i++) {
+    //     int x = 0;
+    // }
+    // if (p < 5){
+    //     int j ;
+    //     j = t + 15;
+    // }
 
 //     int option = 2;
 //     int a;
@@ -31,9 +31,9 @@ int main() {
 //     }
 
 //     int num = 7;
-//     if (num > 0) {
-//         int jaja = num + i;
-//     }
+    // if (num > 0) {
+    //     int jaja = num + i;
+    // }
 
 //     int age = 18;
 //     if (age >= 18) {
@@ -52,9 +52,10 @@ int main() {
 
 }
 
-// int suma(int a, int b){
-//   return a + b;
-// }
+int suma(int a, int b){
+    int h; 
+  return a + b;
+}
 
 // int d = ((25+2/3)*25 + 13) - (5%2);
 // int i = 1;

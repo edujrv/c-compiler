@@ -123,8 +123,11 @@ tipo:
 argumento:
   tipo ID;
 
+argumento_proto:
+  tipo ID;
+
 prototipado_funcion:
-  cabecera_funcion PYC
+  (tipo | VOID) ID PAR_ABRE (lista_argumento_proto | ) PAR_CIERRE PYC
   ;
 
 lista_argumento:
@@ -132,11 +135,13 @@ lista_argumento:
   | argumento COMA lista_argumento
   ;
 
-cabecera_funcion:
-  (tipo | VOID) ID PAR_ABRE (lista_argumento | ) PAR_CIERRE;
+lista_argumento_proto:
+  argumento_proto
+  | argumento_proto COMA lista_argumento_proto
+  ;
   
 declaracion_funcion:
-  cabecera_funcion bloque
+  (tipo | VOID) ID PAR_ABRE (lista_argumento | ) PAR_CIERRE bloque
   ;
 
 argumentos:

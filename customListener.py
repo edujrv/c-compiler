@@ -12,11 +12,13 @@ else:
 class customListener (compiladoresListener):
     #tabla de simbolos
     ts = TablaSimbolos()
+    parametros = []
 
     def guardar(self, contexto):
+        self.f.write("{")
         for key in contexto:
                 self.f.write(contexto[key].toString())
-        self.f.write("\n")
+        self.f.write("}\n")
     
         # Enter a parse tree produced by compiladoresParser#programa.
     def enterPrograma(self, ctx:compiladoresParser.ProgramaContext):
@@ -32,6 +34,15 @@ class customListener (compiladoresListener):
         self.ts.removeContex()
         print(f"->removecontexto global")
         self.f.close()
+    
+    def enterBloques(self, ctx:compiladoresParser.BloquesContext):
+        self.ts.addContex()
+        print(f"->addcontexto")
+
+    def exitBloques(self, ctx:compiladoresParser.BloquesContext):
+        self.guardar(self.ts.ts[-1])
+        self.ts.removeContex()
+        print(f"->removecontexto")
 
     def exitDeclaracion_variable(self, ctx:compiladoresParser.Declaracion_variableContext):
         print(f"-> Declaracion_variable(out) {ctx.getText()}")
@@ -65,18 +76,32 @@ class customListener (compiladoresListener):
             self.ts.ts[self.ts.getDicByKey(str(ctx.getChild(2)))][str(ctx.getChild(2))].used = True
 
 
-
-    def enterBloques(self, ctx:compiladoresParser.BloquesContext):
-        self.ts.addContex()
-        print(f"->addcontexto")
-
-    def exitBloques(self, ctx:compiladoresParser.BloquesContext):
-        self.guardar(self.ts.ts[-1])
-        self.ts.removeContex()
-        print(f"->removecontexto")
+    def exitArgumento_proto(self, ctx:compiladoresParser.Argumento_protoContext):
+        print(f"-> Prototipado_funcion(out) {ctx.getText()}")
+        var = Variable(ctx.getChild(1), ctx.getChild(0).getChild(0))   
+        var.initialized = True     
+        self.parametros.append(var)         
 
 
+    def exitPrototipado_funcion(self, ctx:compiladoresParser.Prototipado_funcionContext):
+        print(f"-> Prototipado_funcion(out) {ctx.getText()}")
+        lis = []
+        for par in self.parametros:
+            lis.append(par.toString())
+        print(f"PARAMETROS -> {lis}")
+        # print(f"-> ctx.getChild(0)) {ctx.getChild(0)}")
+        # print(f"-> ctx.getChild(1)) {ctx.getChild(1)}")
+        # print(f"-> ctx.getChild(2)) {ctx.getChild(2)}")
+        # print(f"-> ctx.getChild(3)) {ctx.getChild(3).getChild(0).getChild(0).getChild(0)}")
+        # print(f"-> ctx.getChild(3)) {ctx.getChild(3).getChild(0).getChild(0).getChild(1)}")
+        # print(f"-> ctx.getChild(4)) {ctx.getChild(4)}")
+        fun = Function(ctx.getChild(1), ctx.getChild(0).getChild(0), self.parametros.copy()) # (name, type, params)
+        self.ts.ts[-1][str(fun.name)] = fun
+        self.parametros.clear()
 
+    def exitArgumento(self, ctx:compiladoresParser.ArgumentoContext):
+        var = Variable(ctx.getChild(1), ctx.getChild(0).getChild(0)) # (name, type)
+        self.ts.ts[-1][str(var.name)] = var
 
 
 del compiladoresParser

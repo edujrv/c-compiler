@@ -70,6 +70,9 @@ class Id:
         
     def toString(self):
         return f'[Name: {self.name}, Type: {self.type}, Init: {self.initialized}, Used: {self.used}, VarFun: {self.varFunc}]'
+    
+    def toStringShort(self):
+        return f'[Name: {self.name}, Type: {self.type}]'
 
     # def __str__(self):
         # return f'(name->{self.name},type->{self.type},init->{self.initialized},used->{self.used},varFun->{self.varFunc})'
@@ -85,4 +88,9 @@ class Function(Id):
         self.varFunc = "function"
         # el valor que retorna la funcion es: type
     
+    def toString(self):
+        lis = []
+        for par in self.parameters:
+            lis.append(par.toStringShort())
+        return f'[Name: {self.name}, Type: {self.type}, Init: {self.initialized}, Used: {self.used}, VarFun: {self.varFunc}, Parameters: {lis}]'
         
