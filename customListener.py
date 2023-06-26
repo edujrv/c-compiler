@@ -45,7 +45,7 @@ class customListener (compiladoresListener):
         for inst in self.ts.ts[-1]:
             var = self.ts.returnKey(inst)
             if not var.initialized :
-                print(f"ERROR: variable '{var.name}' no inicializada")
+                print(f"ERROR: variable '{var.name}' indefinida")
             if not var.used :
                 print(f"ERROR: variable '{var.name}' no utilizada")
     
@@ -95,6 +95,16 @@ class customListener (compiladoresListener):
         if (self.ts.findByKey(str(ctx.getChild(2)))):
             self.ts.ts[self.ts.getDicByKey(str(ctx.getChild(2)))][str(ctx.getChild(2))].used = True
 
+    def exitReturn_func(self, ctx:compiladoresParser.Return_funcContext):
+        name = ctx.ID().getText()
+        variable = self.ts.returnKey(name)
+        exist = self.ts.findByKey(name)
+        if exist:
+            variable.used = True
+        else:
+            print(f"La variable '{name}' no esta definida")
+        # print(f"soy el id: {id}")
+
 
     def exitArgumento_proto(self, ctx:compiladoresParser.Argumento_protoContext):
         print(f"-> Prototipado_funcion(out) {ctx.getText()}")
@@ -141,13 +151,20 @@ class customListener (compiladoresListener):
 
     def exitLlamada_funcion(self, ctx:compiladoresParser.Llamada_funcionContext):
         print(f"LLamada funcion {ctx.getText()}")
-        # print(f"-> ctx.getChild(0)) {ctx.getChild(0)}")
-        # print(f"-> ctx.getChild(1)) {ctx.getChild(1)}")
-        # print(f"-> ctx.getChild(2)) {ctx.getChild(2)}")
         name = str(ctx.getChild(0))
         variable = self.ts.returnKey(name)
-        if ( not self.ts.findByKey(name) or variable.varFunc == 'variable'):
+        exist = self.ts.findByKey(name)
+        if exist:
+            if ( variable.varFunc == 'variable'):
+                print(f"ERROR: funcion '{name}' no existe")
+            elif ( not variable.implemented) :
+                print(f"ERROR: funcion '{name}' no implementada")
+            elif not variable.initialized :
+                print(f"ERROR: funcion '{name}' no prototipada")
+        else:
             print(f"ERROR: funcion '{name}' no existe")
+
+
 
 
 
