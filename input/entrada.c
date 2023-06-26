@@ -1,11 +1,13 @@
 // int funcion();
 // void funcion2(int a);
 int suma(int a, int b);
-
-int global = 3;
+// int suma;
+// int global = 3;
 int main() {
     // int p;
     // int t;
+    // int p = 9;
+    int b = suma(5,6);
 
     // for (int i = 2; i <= 5; i++) {
     //     int x = 0;
@@ -48,14 +50,15 @@ int main() {
 // {
 //     int g = 4;
 // }
-    return 0;
+    return b; //TODO: ver las cosas del return
 
 }
 
-int suma(int a, int b){
-    int h; 
-  return a + b;
-}
+// int suma(int a, int b){
+//     // int h; 
+//     h = 0;
+//   return a + b - h;
+// }
 
 // int d = ((25+2/3)*25 + 13) - (5%2);
 // int i = 1;

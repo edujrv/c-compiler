@@ -86,11 +86,12 @@ class Function(Id):
         super().__init__(name, type)
         self.parameters = parameters
         self.varFunc = "function"
+        self.implemented = False
         # el valor que retorna la funcion es: type
     
     def toString(self):
         lis = []
         for par in self.parameters:
             lis.append(par.toStringShort())
-        return f'[Name: {self.name}, Type: {self.type}, Init: {self.initialized}, Used: {self.used}, VarFun: {self.varFunc}, Parameters: {lis}]'
+        return f'[Name: {self.name}, Type: {self.type}, Init: {self.initialized}, Used: {self.used}, Implemented: {self.implemented}, VarFun: {self.varFunc}, Parameters: {lis}]'
         

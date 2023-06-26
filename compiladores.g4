@@ -97,6 +97,7 @@ instruccion:
   | operacion PYC
   | prototipado_funcion
   | bloques
+  | llamada_funcion PYC
   ;
 
 bloques:
@@ -111,7 +112,7 @@ bloques:
 ;
 
 declaracion_variable:
-  tipo ID ASIGNACION (TEXTO | NUMERO | TRUE | FALSE | operacion)
+  tipo ID ASIGNACION (TEXTO | NUMERO | TRUE | FALSE | operacion | llamada_funcion)
   // tipo ID ASIGNACION (NUMERO | TRUE | FALSE | operacion)
   | tipo ID
   ;
@@ -144,17 +145,17 @@ declaracion_funcion:
   (tipo | VOID) ID PAR_ABRE (lista_argumento | ) PAR_CIERRE bloque
   ;
 
-argumentos:
+parametros:
   ID
-  | ID COMA argumentos
-  | NUMERO COMA argumento 
+  | ID COMA parametros
+  | NUMERO COMA parametros
   | NUMERO
   |
 ;
 
 llamada_funcion:
-  ID PAR_ABRE argumentos PAR_CIERRE PYC
-  | ID ASIGNACION PAR_ABRE argumentos PAR_CIERRE PYC
+  ID PAR_ABRE parametros PAR_CIERRE 
+  | ID ASIGNACION PAR_ABRE parametros PAR_CIERRE 
 
 ;
 
@@ -163,6 +164,7 @@ asignacion_variable:
   ID ASIGNACION (NUMERO | TEXTO)
   // | ID ASIGNACION (NUMERO | ID) (MAS | MENOS | ASTERISCO | BARRA) (NUMERO | ID)
   | ID ASIGNACION operacion
+  | ID ASIGNACION llamada_funcion
   ;
 
 bloque:
