@@ -30,6 +30,21 @@ class customListener (compiladoresListener):
     # Exit a parse tree produced by compiladoresParser#programa.
     def exitPrograma(self, ctx:compiladoresParser.ProgramaContext):
         print("***termina la compilacion***")
+
+        for inst in self.ts.ts[-1]:
+            var = self.ts.returnKey(inst)
+            if not var.initialized :
+                print(f"ERROR: variable o funcion '{var.name}' no inicializada")
+            if not var.used :
+                print(f"ERROR: variable  o funcion'{var.name}' no utilizada")
+            
+            try:
+                if not var.implemented :
+                    print(f"ERROR: funcion'{var.name}' no implementada")
+            except:
+                pass
+
+
         self.guardar(self.ts.ts[-1])
         self.ts.removeContex()
         # print(f"->removecontexto global")
@@ -96,13 +111,16 @@ class customListener (compiladoresListener):
             self.ts.ts[self.ts.getDicByKey(str(ctx.getChild(2)))][str(ctx.getChild(2))].used = True
 
     def exitReturn_func(self, ctx:compiladoresParser.Return_funcContext):
-        name = ctx.ID().getText()
-        variable = self.ts.returnKey(name)
-        exist = self.ts.findByKey(name)
-        if exist:
-            variable.used = True
-        else:
-            print(f"La variable '{name}' no esta definida")
+        try:
+            name = ctx.ID().getText()
+            variable = self.ts.returnKey(name)
+            exist = self.ts.findByKey(name)
+            if exist:
+                variable.used = True
+            else:
+                print(f"La variable '{name}' no esta definida")
+        except:
+            pass 
         # print(f"soy el id: {id}")
 
 
@@ -126,6 +144,7 @@ class customListener (compiladoresListener):
         # print(f"-> ctx.getChild(3)) {ctx.getChild(3).getChild(0).getChild(0).getChild(1)}")
         # print(f"-> ctx.getChild(4)) {ctx.getChild(4)}")
         fun = Function(ctx.getChild(1), ctx.getChild(0).getChild(0), self.parametros.copy()) # (name, type, params)
+        fun.initialized = True
         self.ts.ts[-1][str(fun.name)] = fun
         self.parametros.clear()
 
@@ -147,6 +166,10 @@ class customListener (compiladoresListener):
             print(f"ERROR: funcion '{name}' no prototipada")
         elif (variable):
             variable.implemented = True
+            # self.ts.ts[-1][str(name)].implemented = True
+
+            # fun.initialized = True
+        # self.parametros.clear()
             
 
     def exitLlamada_funcion(self, ctx:compiladoresParser.Llamada_funcionContext):

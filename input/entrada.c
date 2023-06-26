@@ -1,6 +1,6 @@
 // int funcion();
 // void funcion2(int a);
-// int suma(int a, int b);
+int suma(int a, int b);
 // int suma;
 // int global = 3;
 int main() {
@@ -54,11 +54,11 @@ int main() {
 
 }
 
-// int suma(int a, int b){
-//     // int h; 
-//     h = 0;
-//   return a + b - h;
-// }
+int suma(int a, int b){
+    // int h; 
+    h = 0;
+  return a + b - h;
+}
 
 // int d = ((25+2/3)*25 + 13) - (5%2);
 // int i = 1;
