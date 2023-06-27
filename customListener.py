@@ -23,14 +23,10 @@ class customListener (compiladoresListener):
         # Enter a parse tree produced by compiladoresParser#programa.
     def enterPrograma(self, ctx:compiladoresParser.ProgramaContext):
         self.f = open('./output/TablaDeSimbolos.txt','w')
-        print("***comienza la compilacion***")
         self.ts.addContex()
-        # print(f"->addcontexto global")
 
     # Exit a parse tree produced by compiladoresParser#programa.
     def exitPrograma(self, ctx:compiladoresParser.ProgramaContext):
-        print("***termina la compilacion***")
-
         for inst in self.ts.ts[-1]:
             var = self.ts.returnKey(inst)
             if not var.initialized :
@@ -44,11 +40,10 @@ class customListener (compiladoresListener):
             except:
                 pass
 
-
         self.guardar(self.ts.ts[-1])
         self.ts.removeContex()
-        # print(f"->removecontexto global")
         self.f.close()
+    
     
     def enterBloques(self, ctx:compiladoresParser.BloquesContext):
         self.ts.addContex()

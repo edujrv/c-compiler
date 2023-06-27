@@ -1,4 +1,2 @@
-[Name: i, Type: int, Init: True, Used: True, VarFun: variable][Name: x, Type: int, Init: True, Used: False, VarFun: variable]
-[Name: t, Type: int, Init: True, Used: False, VarFun: variable][Name: j, Type: int, Init: True, Used: False, VarFun: variable]
-
-[Name: global, Type: int, Init: True, Used: False, VarFun: variable]
+{[Name: p, Type: int, Init: True, Used: True, VarFun: variable][Name: y, Type: int, Init: True, Used: False, VarFun: variable][Name: x, Type: int, Init: True, Used: True, VarFun: variable]}
+{}

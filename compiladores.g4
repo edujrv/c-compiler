@@ -112,6 +112,7 @@ bloques:
 ;
 
 declaracion_variable:
+  // tipo ID ASIGNACION (TEXTO | NUMERO | TRUE | FALSE | operacion | llamada_funcion | bloque_operacional)
   tipo ID ASIGNACION (TEXTO | NUMERO | TRUE | FALSE | operacion | llamada_funcion)
   // tipo ID ASIGNACION (NUMERO | TRUE | FALSE | operacion)
   | tipo ID
@@ -164,6 +165,7 @@ asignacion_variable:
   ID ASIGNACION (NUMERO | TEXTO)
   // | ID ASIGNACION (NUMERO | ID) (MAS | MENOS | ASTERISCO | BARRA) (NUMERO | ID)
   | ID ASIGNACION operacion
+  // | ID ASIGNACION bloque_operacional
   | ID ASIGNACION llamada_funcion
   ;
 
@@ -206,11 +208,13 @@ operacion:
   ID SUMA_UNITARIA
   | ID RESTA_UNITARIA
   // | ID ((MAS | MENOS | ASTERISCO | BARRA) ID)+
+  // | (NUMERO | ID | bloque_operacional) (MAS | MENOS | ASTERISCO | BARRA | PROCENTAJE) (NUMERO | ID | operacion |bloque_operacional)
   | (NUMERO | ID | bloque_operacional) ((MAS | MENOS | ASTERISCO | BARRA | PROCENTAJE) (NUMERO | ID | bloque_operacional))+
   // | ID ((MAS | MENOS | ASTERISCO | BARRA) (NUMERO | NUMERO_DECIMAL | ID))+
   // | (NUMERO | NUMERO_DECIMAL) ((MAS | MENOS | ASTERISCO | BARRA) (NUMERO | NUMERO_DECIMAL))+
-  // | bloque_operacional
+  | bloque_operacional // TODO: ojo por si se rompe
   ;
+
 
 bloque_for:
   FOR PAR_ABRE (declaracion_variable | asignacion_variable)? PYC condicion? PYC operacion? PAR_CIERRE bloque
