@@ -28,7 +28,7 @@ class customVisitor (ParseTreeVisitor):
     # Visit a parse tree produced by compiladoresParser#programa.
     def visitPrograma(self, ctx:compiladoresParser.ProgramaContext):
         self.f = open("./output/CodigoIntermedio.txt", "w")
-        self.f.write("JUMP MAIN \n")
+        self.f.write("JUMP MAIN ")
         
         self.visitChildren(ctx)
         self.f.close()
@@ -59,7 +59,16 @@ class customVisitor (ParseTreeVisitor):
         id = ctx.ID().getText()
         asignacion = ctx.getChild(3)
         if asignacion != None:
-            self.f.write(f"{id}={asignacion}\n")
+            print(f"AAAAAA{ctx.getText()} => {asignacion.getChildCount()}")
+            if asignacion.getChildCount() == 4:
+                # FUNCION
+                print("ES FUNCION")
+                print(f"AAAAAA{ctx.getText()} => {asignacion.getChildCount()}")
+                self.f.write(f"\n{id} = ")
+                return self.visitChildren(ctx)
+
+            else:
+                self.f.write(f"\n{id}={asignacion}")
         else:
             # tmp = f"{id}" #creo q esto no va xq es el ID solo
             pass
@@ -102,7 +111,7 @@ class customVisitor (ParseTreeVisitor):
         print(f"Declaracion_funcion => {ctx.getChild(1)}")
 
         tmp = str(ctx.getChild(1).getText()).upper()
-        self.f.write(f'{tmp}:\n')
+        self.f.write(f'\n{tmp}:')
         for child in range(ctx.getChildCount()):
             self.visitChildren(ctx.getChild(child)) # sigue con el procesamiento de los nodos
         # return self.visitChildren(ctx)
@@ -110,11 +119,16 @@ class customVisitor (ParseTreeVisitor):
 
     # Visit a parse tree produced by compiladoresParser#parametros.
     def visitParametros(self, ctx:compiladoresParser.ParametrosContext):
+        self.f.write(f', {ctx.getChild(0)}')
+
         return self.visitChildren(ctx)
 
 
     # Visit a parse tree produced by compiladoresParser#llamada_funcion.
     def visitLlamada_funcion(self, ctx:compiladoresParser.Llamada_funcionContext):
+        # tmpAux = f"t{self.tmp}"
+        self.f.write(f'call {ctx.getChild(0)}')
+
         return self.visitChildren(ctx)
 
 
@@ -125,7 +139,7 @@ class customVisitor (ParseTreeVisitor):
             # para el caso de NUMERO
             numero = ctx.NUMERO().getText()
             # print(f"numero: {numero}")
-            self.f.write(ctx.getText() + "\n")
+            self.f.write("\n" + ctx.getText())
             # self.visitChildren(ctx)
             # self.f.write(str(ctx.getChild(0)) + "=" + {numero} + "\n")
         except:
@@ -156,7 +170,7 @@ class customVisitor (ParseTreeVisitor):
             # para el caso de NUMERO
             numero = ctx.NUMERO().getText()
             # print(f"numero: {numero}")
-            self.f.write("t" + str(self.tmp) + "=" + ctx.getText() + "\n")
+            self.f.write("\nt" + str(self.tmp) + "=" + ctx.getText())
             self.get_temp_variable()
         except:
             # para el caso de condicion o id
@@ -164,7 +178,7 @@ class customVisitor (ParseTreeVisitor):
         try:
             # para el caso de ID
             id = ctx.ID()
-            self.f.write("t" + str(self.tmp) + "=" + ctx.getText() + "\n")
+            self.f.write("\nt" + str(self.tmp) + "=" + ctx.getText())
             self.get_temp_variable()
         except:
             # para el caso de condicion SI o SI
@@ -178,7 +192,7 @@ class customVisitor (ParseTreeVisitor):
             print(f"bloque IFFF, de ifelse: {ctx.getText()}")
             print(f"visita child2, condicion")
             self.visitCondicion(ctx.getChild(2))
-            self.f.write("BEQZ t"+str(self.tmp) + " to " + "e"+str(self.cont_lbl) + "\n")
+            self.f.write("\nBEQZ t"+str(self.tmp) + " to " + "e"+str(self.cont_lbl))
             self.label.append(self.cont_lbl)
             self.get_lbl_variable()
             self.aux_if = 'else'
@@ -188,11 +202,11 @@ class customVisitor (ParseTreeVisitor):
             print(f"bloque IF SOLO: {ctx.getText()}")
             print(f"visita child2, condicion")
             self.visitCondicion(ctx.getChild(2))
-            self.f.write("BEQZ t"+str(self.tmp) + " to " + "e"+str(self.cont_lbl) + "\n")
+            self.f.write("\nBEQZ t"+str(self.tmp) + " to " + "e"+str(self.cont_lbl))
             self.label.append(self.cont_lbl)
             self.get_lbl_variable()
             self.visitBloque(ctx.getChild(4))
-            self.f.write("LBL e"+str(self.label[0]) + "\n")
+            self.f.write("\nLBL e"+str(self.label[0]))
             self.label.pop(0)
             print(f"label: {self.label}")
             print(f"contador_lbl: {self.cont_lbl}")
@@ -230,14 +244,14 @@ class customVisitor (ParseTreeVisitor):
         self.visitBloque_if(ctx.getChild(1)) #mando ELSE a if
         self.visitBloque_if(ctx.getChild(0)) # mando a IF sus cosas
         # self.f.write("BEQZ t"+str(self.tmp) + " to " + "e"+str(self.cont_lbl) + "\n")
-        self.f.write("JUMP e"+str(self.cont_lbl) + "\n")
+        self.f.write("\nJUMP e"+str(self.cont_lbl))
         self.label.append(self.cont_lbl)
         self.get_lbl_variable()
-        self.f.write("LBL e"+str(self.label[0]) + "\n")
+        self.f.write("\nLBL e"+str(self.label[0]))
         self.label.pop(0)
         print(f"visita child2, bloque de else")
         self.visitChildren(ctx.getChild(2)) # manda a bloque else
-        self.f.write("LBL e"+str(self.label[0]) + "\n")
+        self.f.write("\nLBL e"+str(self.label[0]))
         self.label.pop(0)
         print(f"label: {self.label}")
         print(f"contador_lbl: {self.cont_lbl}")
@@ -316,12 +330,12 @@ class customVisitor (ParseTreeVisitor):
 
             if (len(temporales) == 0):
                 result = f"{aux}{operator}{right_operand}"
-                self.f.write("t" + str(self.tmp) + "=" + result + "\n")
+                self.f.write("\nt" + str(self.tmp) + "=" + result)
                 temporales.append(self.tmp)
                 self.tmp = self.tmp + 1
             else:
                 result = f"t{temporales[-1]}{operator}{right_operand}"
-                self.f.write("t" + str(self.tmp) + "=" + result + "\n")
+                self.f.write("\nt" + str(self.tmp) + "=" + result)
                 temporales.append(self.tmp)
                 self.tmp = self.tmp + 1
         
