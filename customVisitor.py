@@ -400,20 +400,30 @@ class customVisitor (ParseTreeVisitor):
         contador = 0
         aux = ctx.getChild(0) # left_operand
         temporales = []
-        for i in range(2, ctx.getChildCount(), 2):
-            operator = ctx.getChild(i - 1).getText()
-            right_operand = ctx.getChild(i)
 
-            if (len(temporales) == 0):
-                result = f"{aux}{operator}{right_operand}"
-                self.f.write("\nt" + str(self.tmp) + "=" + result)
-                temporales.append(self.tmp)
-                self.tmp = self.tmp + 1
-            else:
-                result = f"t{temporales[-1]}{operator}{right_operand}"
-                self.f.write("\nt" + str(self.tmp) + "=" + result)
-                temporales.append(self.tmp)
-                self.tmp = self.tmp + 1
+        # print(f"getchildren1: {ctx.getChild(1)}")
+        if str(ctx.getChild(1)) == "++":
+            result = f"\n{aux} = {aux} + 1"
+            self.f.write(result)
+        if str(ctx.getChild(1)) == "--":
+            result = f"\n{aux} = {aux} - 1"
+            self.f.write(result)
+        else:
+
+            for i in range(2, ctx.getChildCount(), 2):
+                operator = ctx.getChild(i - 1).getText()
+                right_operand = ctx.getChild(i)
+
+                if (len(temporales) == 0):
+                    result = f"{aux}{operator}{right_operand}"
+                    self.f.write("\nt" + str(self.tmp) + "=" + result)
+                    temporales.append(self.tmp)
+                    self.tmp = self.tmp + 1
+                else:
+                    result = f"t{temporales[-1]}{operator}{right_operand}"
+                    self.f.write("\nt" + str(self.tmp) + "=" + result)
+                    temporales.append(self.tmp)
+                    self.tmp = self.tmp + 1
         
         temporales.clear();
 
@@ -426,7 +436,45 @@ class customVisitor (ParseTreeVisitor):
 
     # Visit a parse tree produced by compiladoresParser#bloque_for.
     def visitBloque_for(self, ctx:compiladoresParser.Bloque_forContext):
-        return self.visitChildren(ctx)
+        """  FOR PAR_ABRE (declaracion_variable | asignacion_variable)? PYC condicion? PYC operacion? PAR_CIERRE bloque
+        
+            for (int i = 0; i <= 5; i++) {
+                 int x = 0;
+            }
+
+            i=0
+            lbl e0 #empieza for
+            breq ***condicion*** e1
+            ... bloque ...
+            t5=i+1
+            i=t5
+            jump e0
+            lbl e1
+        """
+        print(f"FOR: {ctx.getText()}")
+        #asignacion o declaracion variable
+        try:
+            self.visitDeclaracion_variable(ctx.getChild(2))
+        except:
+            self.visitAsignacion_variable(ctx.getChild(2))
+        self.f.write("\nLBL e"+str(self.cont_lbl)) #etiqueta de start for
+        self.label.append(self.cont_lbl)
+        self.get_lbl_variable()
+
+        self.visitCondicion(ctx.getChild(4)) #condicion del for
+        self.f.write("\nBEQZ t"+str(self.tmp) + " to " + "e"+str(self.cont_lbl))
+        self.label.append(self.cont_lbl)
+        self.get_lbl_variable()
+
+        self.visitBloque(ctx.getChild(8)) #visita bloque del for (resto del code)
+
+        self.visitOperacion(ctx.getChild(6)) #visita operacion
+
+        self.f.write("\nJUMP e"+str(self.label[0])) #salto a start for
+        self.label.pop(0)
+        self.f.write("\nLBL e"+str(self.label[0])) #label end for
+        self.label.pop(0)
+        # return self.visitChildren(ctx)
 
 
     # Visit a parse tree produced by compiladoresParser#bloque_while.
