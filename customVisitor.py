@@ -182,11 +182,16 @@ class customVisitor (ParseTreeVisitor):
 
             # elif asignacion.getChildCount() == 3:
             else:
-                print(f"asig_var caso Operacion")
-                self.visitChildren(ctx)
-                return self.f.write(f"\n{id} = t{self.tmp-1}")
-                # return self.visitChildren(ctx)
-                # self.f.write(f"\n{id}={asignacion.getText()}")
+                try:
+                    # para el caso de NUMERO
+                    print(f"asig_var caso Numero")
+                    numero = ctx.NUMERO().getText()
+                    self.f.write(f"\n{id} = {numero}")
+                except:
+                    # para el caso de OPERACION
+                    print(f"asig_var caso Operacion")
+                    self.visitChildren(ctx)
+                    return self.f.write(f"\n{id} = t{self.tmp-1}")
         else:
             # tmp = f"{id}" #creo q esto no va xq es el ID solo
             pass
@@ -201,7 +206,37 @@ class customVisitor (ParseTreeVisitor):
 
     # Visit a parse tree produced by compiladoresParser#return_func.
     def visitReturn_func(self, ctx:compiladoresParser.Return_funcContext):
-        return self.visitChildren(ctx)
+        print(f"RETURN: {ctx.getText()}")
+        try:
+            #caso operacion
+            self.visitChildren(ctx)
+            operacion = ctx.operacion().getText()
+            self.f.write(f"\nreturn t{self.tmp-1}")
+        except:
+            pass
+        try:
+            id = ctx.ID().getText()
+            self.f.write(f"\nreturn {id}")
+        except:
+            pass
+        try:
+            numero = ctx.NUMERO().getText()
+            self.f.write(f"\nreturn {numero}")
+        except:
+            pass
+        try:
+            true = ctx.TRUE().getText()
+            self.f.write(f"\nreturn {true}")
+        except:
+            pass
+        try:
+            false = ctx.FALSE().getText()
+            self.f.write(f"\nreturn {false}")
+        except:
+            pass
+        if (ctx.getChildCount() == 2):
+            #caso return;
+            self.f.write(f"\nreturn")
 
 
     # Visit a parse tree produced by compiladoresParser#condicion.

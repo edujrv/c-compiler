@@ -7,18 +7,19 @@ int main() {
     // int m;
     // int y = 0;
     // p = 5;
+    // f = 6 + 1;
     // p = 1+2;
     // int x = 0;
     // int p = x * 6 + x + y + 4 + 2 - 1 - 6 - 5 + 8 + 1;
     // // int p = x * 6 + x + y + 4 + 2 - 1 - 6 - 5 + 8 + 1 * x + y;
-    int q = x * 6 - 3;
+    // int q = x * 6 - 3;
    
 
     // p = (1+2); //TODO: ESTO DA ERROR!! OJO!
-    t = 4 + 2;
+    // t = 4 + 2;
     // int d = ((25+2/1)*25 + 3) - (5%1);
     // int p = 9;
-    b = suma(5,6,a,b);
+    b = suma(5,6);
 
     // for (int i = 2; i <= 5; i++) {
     //     int x = 0;
@@ -38,7 +39,7 @@ int main() {
     //     b = 7;
     //     }
 
-    int option = 2;
+    // int option = 2;
 //     int a;
 //     switch (option) {
 //         case 0:
@@ -78,7 +79,7 @@ int main() {
 int suma(int a, int b){
     int h; 
     h = 0;
-  return a + b - h;
+    return a + b;
 }
 
 // int d = ((25+2/3)*25 + 13) - (5%2);
