@@ -22,11 +22,20 @@ int main() {
     // for (int i = 2; i <= 5; i++) {
     //     int x = 0;
     // }
+    // int x = 1;
+    // int y = 1;
     if (x>0){
         y = 4;
-    }  else {
+    } 
+    else {
         y = 5;
         }
+    if (a>0){
+        x = 6;
+    }
+    else{
+        x = 7;
+    }
 
 //     int option = 2;
 //     int a;

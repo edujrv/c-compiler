@@ -10,14 +10,20 @@ else:
 class customVisitor (ParseTreeVisitor):
     tmp = 0 # generador de variables temporales, t<nro>
     label = [] # generador de etiquetas, e<nro>
+    cont_lbl = 0
     """para las funciones se usa una stack,
     se hace push de los argumentos al stack y luego el jump a la funcion.
     del otro lado se hace pop para sacar los args"""
+    aux_if = 'else'
 
     def get_temp_variable(self):
         temp = 't' + str(self.tmp)
         self.tmp += 1
         return temp
+
+    def get_lbl_variable(self):
+        self.cont_lbl += 1
+        return self.cont_lbl
         
     # Visit a parse tree produced by compiladoresParser#programa.
     def visitPrograma(self, ctx:compiladoresParser.ProgramaContext):
@@ -135,8 +141,8 @@ class customVisitor (ParseTreeVisitor):
     # Visit a parse tree produced by compiladoresParser#bloque.
     def visitBloque(self, ctx:compiladoresParser.BloqueContext):
         print(f"Bloque")
-        return self.visitChildren(ctx)
-
+        self.visitChildren(ctx)
+        # self.f.write("LBL bloque e1" + "\n")
 
     # Visit a parse tree produced by compiladoresParser#return_func.
     def visitReturn_func(self, ctx:compiladoresParser.Return_funcContext):
@@ -168,11 +174,31 @@ class customVisitor (ParseTreeVisitor):
 
     # Visit a parse tree produced by compiladoresParser#bloque_if.
     def visitBloque_if(self, ctx:compiladoresParser.Bloque_ifContext):
-        print(f"bloque IFFFFF: {ctx.getText()}")
-        print(f"visita child2, condicion")
-        self.visitCondicion(ctx.getChild(2))
-        self.f.write("BEQZ t" + str(self.tmp) + " to " + "e0" + "\n")
-        self.visitBloque(ctx.getChild(4))
+        if ( ctx.getText() != 'else' and self.aux_if == 'if'):
+            print(f"bloque IFFF, de ifelse: {ctx.getText()}")
+            print(f"visita child2, condicion")
+            self.visitCondicion(ctx.getChild(2))
+            self.f.write("BEQZ t"+str(self.tmp) + " to " + "e"+str(self.cont_lbl) + "\n")
+            self.label.append(self.cont_lbl)
+            self.get_lbl_variable()
+            self.aux_if = 'else'
+            self.visitBloque(ctx.getChild(4))
+
+        elif ( ctx.getText() != 'else' and self.aux_if == 'else' ):
+            print(f"bloque IF SOLO: {ctx.getText()}")
+            print(f"visita child2, condicion")
+            self.visitCondicion(ctx.getChild(2))
+            self.f.write("BEQZ t"+str(self.tmp) + " to " + "e"+str(self.cont_lbl) + "\n")
+            self.label.append(self.cont_lbl)
+            self.get_lbl_variable()
+            self.visitBloque(ctx.getChild(4))
+            self.f.write("LBL e"+str(self.label[0]) + "\n")
+            self.label.pop(0)
+            print(f"label: {self.label}")
+            print(f"contador_lbl: {self.cont_lbl}")
+       
+        if ( ctx.getText() == 'else'):
+            self.aux_if = 'if'
         # return self.visitChildren(ctx)
 
 
@@ -200,16 +226,21 @@ class customVisitor (ParseTreeVisitor):
         lbl e1
         """
         print(f"IF_ELSE: {ctx.getText()}")
-        # print(f"child0: {ctx.getChild(0).getText()}")
-        # print(f"if: {ctx.bloque_if().getText()}")
         print(f"visita child0, if")
-        # self.visitChildren(ctx.getChild(0)) # manda al IF
-        self.visitBloque_if(ctx.getChild(0))
-        self.f.write("JUMP e1" + "\n")
-        self.f.write("LBL e0" + "\n")
+        self.visitBloque_if(ctx.getChild(1)) #mando ELSE a if
+        self.visitBloque_if(ctx.getChild(0)) # mando a IF sus cosas
+        # self.f.write("BEQZ t"+str(self.tmp) + " to " + "e"+str(self.cont_lbl) + "\n")
+        self.f.write("JUMP e"+str(self.cont_lbl) + "\n")
+        self.label.append(self.cont_lbl)
+        self.get_lbl_variable()
+        self.f.write("LBL e"+str(self.label[0]) + "\n")
+        self.label.pop(0)
         print(f"visita child2, bloque de else")
         self.visitChildren(ctx.getChild(2)) # manda a bloque else
-        self.f.write("LBL e1" + "\n")
+        self.f.write("LBL e"+str(self.label[0]) + "\n")
+        self.label.pop(0)
+        print(f"label: {self.label}")
+        print(f"contador_lbl: {self.cont_lbl}")
         # return self.visitChildren(ctx)
 
 
