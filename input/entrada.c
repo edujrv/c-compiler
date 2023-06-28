@@ -4,13 +4,14 @@
 // int suma;
 // int global = 3;
 int main() {
-    int p;
-    int y = 0;
-    p = 5;
-    p = 1+2;
-    int x = 0;
-    p = x * 6 + x + y;
+    // int p;
+    // int y = 0;
+    // p = 5;
+    // p = 1+2;
+    // int x = 0;
     // p = x * 6 + x + y;
+    // p = x * 6 + x + y;
+   
 
     // p = (1+2); //TODO: ESTO DA ERROR!! OJO!
     // int t = p + 2;
@@ -21,10 +22,11 @@ int main() {
     // for (int i = 2; i <= 5; i++) {
     //     int x = 0;
     // }
-    // if (p < 5){
-    //     int j ;
-    //     j = t + 15;
-    // }
+    if (x>0){
+        y = 4;
+    }  else {
+        y = 5;
+        }
 
 //     int option = 2;
 //     int a;

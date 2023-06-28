@@ -9,11 +9,16 @@ else:
 
 class customVisitor (ParseTreeVisitor):
     tmp = 0 # generador de variables temporales, t<nro>
-    # generador de etiquetas, e<nro>
+    label = [] # generador de etiquetas, e<nro>
     """para las funciones se usa una stack,
     se hace push de los argumentos al stack y luego el jump a la funcion.
     del otro lado se hace pop para sacar los args"""
 
+    def get_temp_variable(self):
+        temp = 't' + str(self.tmp)
+        self.tmp += 1
+        return temp
+        
     # Visit a parse tree produced by compiladoresParser#programa.
     def visitPrograma(self, ctx:compiladoresParser.ProgramaContext):
         self.f = open("./output/CodigoIntermedio.txt", "w")
@@ -35,8 +40,8 @@ class customVisitor (ParseTreeVisitor):
 
     # Visit a parse tree produced by compiladoresParser#bloques.
     def visitBloques(self, ctx:compiladoresParser.BloquesContext):
-        print(f"Bloques")
-        print(f"{ctx.getChild(0).getText()}")
+        # print(f"Bloques")
+        # print(f"{ctx.getChild(0).getText()}")
         return self.visitChildren(ctx)
 
 
@@ -113,7 +118,7 @@ class customVisitor (ParseTreeVisitor):
         try:
             # para el caso de NUMERO
             numero = ctx.NUMERO().getText()
-            print(f"numero: {numero}")
+            # print(f"numero: {numero}")
             self.f.write(ctx.getText() + "\n")
             # self.visitChildren(ctx)
             # self.f.write(str(ctx.getChild(0)) + "=" + {numero} + "\n")
@@ -121,9 +126,10 @@ class customVisitor (ParseTreeVisitor):
             # para el caso de OPERACION
             print(f"asig_var caso Operacion")
             pass
-        self.visitChildren(ctx)
+        # print(f"fin asignacion variable")
+        # self.visitChildren(ctx)
         # self.tmp = 0
-        # return self.visitChildren(ctx)
+        return self.visitChildren(ctx)
 
 
     # Visit a parse tree produced by compiladoresParser#bloque.
@@ -139,17 +145,72 @@ class customVisitor (ParseTreeVisitor):
 
     # Visit a parse tree produced by compiladoresParser#condicion.
     def visitCondicion(self, ctx:compiladoresParser.CondicionContext):
-        return self.visitChildren(ctx)
+        print(f"Condicion {ctx.getText()}")
+        try:
+            # para el caso de NUMERO
+            numero = ctx.NUMERO().getText()
+            # print(f"numero: {numero}")
+            self.f.write("t" + str(self.tmp) + "=" + ctx.getText() + "\n")
+            self.get_temp_variable()
+        except:
+            # para el caso de condicion o id
+            pass
+        try:
+            # para el caso de ID
+            id = ctx.ID()
+            self.f.write("t" + str(self.tmp) + "=" + ctx.getText() + "\n")
+            self.get_temp_variable()
+        except:
+            # para el caso de condicion SI o SI
+            pass
+        # return self.visitChildren(ctx)
 
 
     # Visit a parse tree produced by compiladoresParser#bloque_if.
     def visitBloque_if(self, ctx:compiladoresParser.Bloque_ifContext):
-        return self.visitChildren(ctx)
+        print(f"bloque IFFFFF: {ctx.getText()}")
+        print(f"visita child2, condicion")
+        self.visitCondicion(ctx.getChild(2))
+        self.f.write("BEQZ t" + str(self.tmp) + " to " + "e0" + "\n")
+        self.visitBloque(ctx.getChild(4))
+        # return self.visitChildren(ctx)
 
 
     # Visit a parse tree produced by compiladoresParser#bloque_if_else.
     def visitBloque_if_else(self, ctx:compiladoresParser.Bloque_if_elseContext):
-        return self.visitChildren(ctx)
+        """
+        <<entrada>>
+        if (x>0)
+            y = z * 9 - f
+        else
+            y = z * 9 + g
+
+        <<tac>>
+        t0 = x>0           #condicion
+        beqz t0 to e0      #ifelse t lbl
+                            #children
+        t1 = z*9
+        t2 = t1-f
+        y = t2
+        jmp e1            # ifelse
+        lbl e0
+        t3 = z*9
+        t4 = t3+g
+        y = t4
+        lbl e1
+        """
+        print(f"IF_ELSE: {ctx.getText()}")
+        # print(f"child0: {ctx.getChild(0).getText()}")
+        # print(f"if: {ctx.bloque_if().getText()}")
+        print(f"visita child0, if")
+        # self.visitChildren(ctx.getChild(0)) # manda al IF
+        self.visitBloque_if(ctx.getChild(0))
+        self.f.write("JUMP e1" + "\n")
+        self.f.write("LBL e0" + "\n")
+        print(f"visita child2, bloque de else")
+        self.visitChildren(ctx.getChild(2)) # manda a bloque else
+        self.f.write("LBL e1" + "\n")
+        # return self.visitChildren(ctx)
 
 
     # Visit a parse tree produced by compiladoresParser#bloque_operacional.
@@ -271,26 +332,7 @@ class customVisitor (ParseTreeVisitor):
 del compiladoresParser
 
 
-"""
-<<entrada>>
-if (x>0)
-    y = z * 9 - f
-else
-    y = z * 9 + g
 
-<<tac>>
-t0 = x>0
-beqz t0 to e0
-t1 = z*9
-t2 = t1-f
-y = t2
-jmp e1
-lbl 0
-t3 = z*9
-t4 = t3+g
-y = t4
-lbl e1
-"""
 """
 <<entrada>>
 for (x=0; x<10; x++)
