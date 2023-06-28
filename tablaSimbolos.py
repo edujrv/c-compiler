@@ -34,6 +34,17 @@ class TablaSimbolos:
             if key in context:
                 return True
         return False
+
+    def getDicByKey(self,key):
+        """busca un ID en todos los diccionarios de la lista y delvuelve el index del diccionario"""
+        #print(f'TS -> {self.ts}')
+        #print(f'TS -> key:{key}')
+        i = -1;
+        for context in self.ts:
+            i = i + 1
+            if key in context:
+                return i
+        return False
     
     def returnKey(self,key):
         """devuelve el ID, retorna False si no se encuentra"""
@@ -58,7 +69,11 @@ class Id:
         self.varFunc = "variable"  #indica si es una VARIABLE o una FUNCION
         
     def toString(self):
-        return f'[Name: {self.name}, Type: {self.type}, Init: {self.initialized}, Used: {self.used}, VarFun: {self.varFunc}]'
+        return f'{self.name}\t{self.type}\t{self.initialized}\t{self.used}\t{self.varFunc}'
+        # return f'[Name: {self.name}, Type: {self.type}, Init: {self.initialized}, Used: {self.used}, VarFun: {self.varFunc}]'
+    
+    def toStringShort(self):
+        return f'[Name: {self.name}, Type: {self.type}]'
 
     # def __str__(self):
         # return f'(name->{self.name},type->{self.type},init->{self.initialized},used->{self.used},varFun->{self.varFunc})'
@@ -72,6 +87,13 @@ class Function(Id):
         super().__init__(name, type)
         self.parameters = parameters
         self.varFunc = "function"
+        self.implemented = False
         # el valor que retorna la funcion es: type
     
+    def toString(self):
+        lis = []
+        for par in self.parameters:
+            lis.append(par.toStringShort())
+        return f'{self.name}\t{self.type}\t{self.initialized}\t{self.used}\t{self.varFunc}\t{self.implemented}\t{lis}'
+        # return f'[Name: {self.name}, Type: {self.type}, Init: {self.initialized}, Used: {self.used}, Implemented: {self.implemented}, VarFun: {self.varFunc}, Parameters: {lis}]'
         

@@ -4,6 +4,7 @@ target
 .antlr
 .vscode
 env/
+pyenv/
 __pycache__
 compiladores*.java
 compiladores*.py
