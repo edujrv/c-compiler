@@ -17,8 +17,8 @@ class customVisitor (ParseTreeVisitor):
     aux_if = 'else'
 
     def get_temp_variable(self):
-        temp = 't' + str(self.tmp)
         self.tmp += 1
+        temp = 't' + str(self.tmp)
         return temp
 
     def get_lbl_variable(self):
@@ -68,11 +68,27 @@ class customVisitor (ParseTreeVisitor):
                 return self.visitChildren(ctx)
 
             else:
-                self.f.write(f"\n{id}={asignacion}")
+                # self.f.write(f"\n{id}={asignacion}")
+                try:
+                    # para el caso de NUMERO
+                    numero = ctx.NUMERO().getText()
+                    
+                    # print(f"numero: {numero}")
+                    self.f.write(f"\n{id} = {numero}")
+                    # self.visitChildren(ctx)
+                    # self.f.write(str(ctx.getChild(0)) + "=" + {numero} + "\n")
+                except:
+                    # para el caso de OPERACION
+                    print(f"asig_var caso Operacion")
+                    self.visitChildren(ctx)
+                    return self.f.write(f"\n{id} = t{self.tmp-1}")
+                # self.visitChildren(ctx)
+                # return self.f.write(f"\n{id} = t{self.tmp}")
         else:
             # tmp = f"{id}" #creo q esto no va xq es el ID solo
             pass
-        return self.visitChildren(ctx)
+        self.visitChildren(ctx)
+        
 
 
 
@@ -127,7 +143,7 @@ class customVisitor (ParseTreeVisitor):
     # Visit a parse tree produced by compiladoresParser#llamada_funcion.
     def visitLlamada_funcion(self, ctx:compiladoresParser.Llamada_funcionContext):
         # tmpAux = f"t{self.tmp}"
-        self.f.write(f'\ncall {ctx.getChild(0)}')
+        self.f.write(f'call {ctx.getChild(0)}')
 
         return self.visitChildren(ctx)
 
@@ -151,20 +167,26 @@ class customVisitor (ParseTreeVisitor):
         # # self.tmp = 0
         # return self.visitChildren(ctx)
         print(f"Asignacion variable: {ctx.getText()}")
+        # print(f"Asignacion variable: {ctx.getChild(2)}")
     
-        id = ctx.ID().getText()
-        asignacion = ctx.getChild(3)
+        id = ctx.getChild(0)
+        asignacion = ctx.getChild(2)
         if asignacion != None:
-            print(f"AAAAAA{ctx.getText()} => {asignacion.getChildCount()}")
+            print(f"AAAAAA   ASIGNACIOOOOOOOOOOOON {ctx.getText()} => {asignacion.getChildCount()}")
             if asignacion.getChildCount() == 4:
                 # FUNCION
-                print("ES FUNCION")
+                print("ES FUNCION ASIGNACIOOOOOOOOOOOON")
                 print(f"AAAAAA{ctx.getText()} => {asignacion.getChildCount()}")
                 self.f.write(f"\n{id} = ")
                 return self.visitChildren(ctx)
 
+            # elif asignacion.getChildCount() == 3:
             else:
-                self.f.write(f"\n{id}={asignacion}")
+                print(f"asig_var caso Operacion")
+                self.visitChildren(ctx)
+                return self.f.write(f"\n{id} = t{self.tmp-1}")
+                # return self.visitChildren(ctx)
+                # self.f.write(f"\n{id}={asignacion.getText()}")
         else:
             # tmp = f"{id}" #creo q esto no va xq es el ID solo
             pass
