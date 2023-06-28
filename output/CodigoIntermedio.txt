@@ -1,9 +1,37 @@
 JUMP MAIN 
 MAIN:
-y=0
-p=5
-t0=1+2
-x=0
-t1=x*6
-t2=t1+x
-t3=t2+y
+main = 10
+z = 9
+LBL e0
+t0=z>0
+BEQZ t1 to e1
+whilee = 10
+y = 6
+t1=x+1
+x = t1
+z = z + 1
+JUMP e0
+LBL e1
+resultado = 0
+i = 0
+LBL e2
+t2=i<=10
+BEQZ t3 to e3
+forr = 10
+resultado = call suma, resultado, i
+i = i + 1
+JUMP e2
+LBL e3
+t3=resultado<15
+BEQZ t4 to e4
+iff = 10
+j = 89
+JUMP e5
+LBL e4
+j = 90
+LBL e5
+return 0
+SUMA:
+sumafunc = 0
+t4=a+b
+return t4

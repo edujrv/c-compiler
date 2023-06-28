@@ -9,13 +9,18 @@ else:
 
 class compiladoresVisitor(ParseTreeVisitor):
 
-    # Visit a parse tree produced by compiladoresParser#compiladores.
-    def visitCompiladores(self, ctx:compiladoresParser.CompiladoresContext):
+    # Visit a parse tree produced by compiladoresParser#programa.
+    def visitPrograma(self, ctx:compiladoresParser.ProgramaContext):
         return self.visitChildren(ctx)
 
 
-    # Visit a parse tree produced by compiladoresParser#statement.
-    def visitStatement(self, ctx:compiladoresParser.StatementContext):
+    # Visit a parse tree produced by compiladoresParser#instrucciones.
+    def visitInstrucciones(self, ctx:compiladoresParser.InstruccionesContext):
+        return self.visitChildren(ctx)
+
+
+    # Visit a parse tree produced by compiladoresParser#instruccion.
+    def visitInstruccion(self, ctx:compiladoresParser.InstruccionContext):
         return self.visitChildren(ctx)
 
 
@@ -34,8 +39,13 @@ class compiladoresVisitor(ParseTreeVisitor):
         return self.visitChildren(ctx)
 
 
-    # Visit a parse tree produced by compiladoresParser#atributos.
-    def visitAtributos(self, ctx:compiladoresParser.AtributosContext):
+    # Visit a parse tree produced by compiladoresParser#argumento.
+    def visitArgumento(self, ctx:compiladoresParser.ArgumentoContext):
+        return self.visitChildren(ctx)
+
+
+    # Visit a parse tree produced by compiladoresParser#argumento_proto.
+    def visitArgumento_proto(self, ctx:compiladoresParser.Argumento_protoContext):
         return self.visitChildren(ctx)
 
 
@@ -44,18 +54,28 @@ class compiladoresVisitor(ParseTreeVisitor):
         return self.visitChildren(ctx)
 
 
-    # Visit a parse tree produced by compiladoresParser#lista_parametro.
-    def visitLista_parametro(self, ctx:compiladoresParser.Lista_parametroContext):
+    # Visit a parse tree produced by compiladoresParser#lista_argumento.
+    def visitLista_argumento(self, ctx:compiladoresParser.Lista_argumentoContext):
         return self.visitChildren(ctx)
 
 
-    # Visit a parse tree produced by compiladoresParser#id_funcion.
-    def visitId_funcion(self, ctx:compiladoresParser.Id_funcionContext):
+    # Visit a parse tree produced by compiladoresParser#lista_argumento_proto.
+    def visitLista_argumento_proto(self, ctx:compiladoresParser.Lista_argumento_protoContext):
         return self.visitChildren(ctx)
 
 
     # Visit a parse tree produced by compiladoresParser#declaracion_funcion.
     def visitDeclaracion_funcion(self, ctx:compiladoresParser.Declaracion_funcionContext):
+        return self.visitChildren(ctx)
+
+
+    # Visit a parse tree produced by compiladoresParser#parametros.
+    def visitParametros(self, ctx:compiladoresParser.ParametrosContext):
+        return self.visitChildren(ctx)
+
+
+    # Visit a parse tree produced by compiladoresParser#llamada_funcion.
+    def visitLlamada_funcion(self, ctx:compiladoresParser.Llamada_funcionContext):
         return self.visitChildren(ctx)
 
 

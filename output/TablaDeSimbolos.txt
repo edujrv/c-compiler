@@ -1,2 +1,38 @@
-{[Name: p, Type: int, Init: True, Used: True, VarFun: variable][Name: y, Type: int, Init: True, Used: False, VarFun: variable][Name: x, Type: int, Init: True, Used: True, VarFun: variable]}
-{}
+Contexto nro 0
+Nombre	Tipo	Inicializada	Usada	Clasificacion	Implementada	Parametros
+whilee	int	True	False	variable
+
+
+Contexto nro 1
+Nombre	Tipo	Inicializada	Usada	Clasificacion	Implementada	Parametros
+i	int	True	True	variable
+forr	int	True	False	variable
+
+
+Contexto nro 2
+Nombre	Tipo	Inicializada	Usada	Clasificacion	Implementada	Parametros
+iff	int	True	False	variable
+j	int	True	False	variable
+
+
+Contexto nro 3
+Nombre	Tipo	Inicializada	Usada	Clasificacion	Implementada	Parametros
+main	int	True	False	variable
+y	int	True	True	variable
+x	int	True	True	variable
+z	int	True	True	variable
+resultado	int	True	True	variable
+
+
+Contexto nro 4
+Nombre	Tipo	Inicializada	Usada	Clasificacion	Implementada	Parametros
+a	int	True	True	variable
+b	int	True	True	variable
+sumafunc	int	True	True	variable
+
+
+Contexto nro 5
+Nombre	Tipo	Inicializada	Usada	Clasificacion	Implementada	Parametros
+suma	int	True	True	function	True	['[Name: a, Type: int]', '[Name: b, Type: int]']
+
+
