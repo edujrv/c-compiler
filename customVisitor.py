@@ -127,28 +127,47 @@ class customVisitor (ParseTreeVisitor):
     # Visit a parse tree produced by compiladoresParser#llamada_funcion.
     def visitLlamada_funcion(self, ctx:compiladoresParser.Llamada_funcionContext):
         # tmpAux = f"t{self.tmp}"
-        self.f.write(f'call {ctx.getChild(0)}')
+        self.f.write(f'\ncall {ctx.getChild(0)}')
 
         return self.visitChildren(ctx)
 
 
     # Visit a parse tree produced by compiladoresParser#asignacion_variable.
     def visitAsignacion_variable(self, ctx:compiladoresParser.Asignacion_variableContext):
-        print(f"Asignacion variable {ctx.getText()}")
-        try:
-            # para el caso de NUMERO
-            numero = ctx.NUMERO().getText()
-            # print(f"numero: {numero}")
-            self.f.write("\n" + ctx.getText())
-            # self.visitChildren(ctx)
-            # self.f.write(str(ctx.getChild(0)) + "=" + {numero} + "\n")
-        except:
-            # para el caso de OPERACION
-            print(f"asig_var caso Operacion")
+        # print(f"Asignacion variable {ctx.getText()}")
+        # try:
+        #     # para el caso de NUMERO
+        #     numero = ctx.NUMERO().getText()
+        #     # print(f"numero: {numero}")
+        #     self.f.write("\n" + ctx.getText())
+        #     # self.visitChildren(ctx)
+        #     # self.f.write(str(ctx.getChild(0)) + "=" + {numero} + "\n")
+        # except:
+        #     # para el caso de OPERACION
+        #     print(f"asig_var caso Operacion")
+        #     pass
+        # # print(f"fin asignacion variable")
+        # # self.visitChildren(ctx)
+        # # self.tmp = 0
+        # return self.visitChildren(ctx)
+        print(f"Asignacion variable: {ctx.getText()}")
+    
+        id = ctx.ID().getText()
+        asignacion = ctx.getChild(3)
+        if asignacion != None:
+            print(f"AAAAAA{ctx.getText()} => {asignacion.getChildCount()}")
+            if asignacion.getChildCount() == 4:
+                # FUNCION
+                print("ES FUNCION")
+                print(f"AAAAAA{ctx.getText()} => {asignacion.getChildCount()}")
+                self.f.write(f"\n{id} = ")
+                return self.visitChildren(ctx)
+
+            else:
+                self.f.write(f"\n{id}={asignacion}")
+        else:
+            # tmp = f"{id}" #creo q esto no va xq es el ID solo
             pass
-        # print(f"fin asignacion variable")
-        # self.visitChildren(ctx)
-        # self.tmp = 0
         return self.visitChildren(ctx)
 
 

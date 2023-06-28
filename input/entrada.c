@@ -11,14 +11,14 @@ int main() {
     // int x = 0;
     // int p = x * 6 + x + y + 4 + 2 - 1 - 6 - 5 + 8 + 1;
     // // int p = x * 6 + x + y + 4 + 2 - 1 - 6 - 5 + 8 + 1 * x + y;
-    // int q = x * 6 - 3;
+    int q = x * 6 - 3;
    
 
     // p = (1+2); //TODO: ESTO DA ERROR!! OJO!
-    int t = 4 + 2;
+    t = 4 + 2;
     // int d = ((25+2/1)*25 + 3) - (5%1);
     // int p = 9;
-    int b = suma(5,6,a,b);
+    b = suma(5,6,a,b);
 
     // for (int i = 2; i <= 5; i++) {
     //     int x = 0;
