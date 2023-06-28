@@ -13,6 +13,7 @@ class customListener (compiladoresListener):
     #tabla de simbolos
     ts = TablaSimbolos()
     parametros = []
+    # contextos = []
 
     def guardar(self, contexto):
         self.f.write("{")
@@ -24,6 +25,7 @@ class customListener (compiladoresListener):
     def enterPrograma(self, ctx:compiladoresParser.ProgramaContext):
         self.f = open('./output/TablaDeSimbolos.txt','w')
         self.ts.addContex()
+        # self.contextos.append("Global")
 
     # Exit a parse tree produced by compiladoresParser#programa.
     def exitPrograma(self, ctx:compiladoresParser.ProgramaContext):
@@ -44,6 +46,15 @@ class customListener (compiladoresListener):
         self.ts.removeContex()
         self.f.close()
     
+    '''
+    bloque_if
+  | declaracion_funcion 
+  | bloque_if_else
+  | bloque_for
+  | bloque_while
+  | bloque_do_while
+  | bloque_switch
+  '''
     
     def enterBloques(self, ctx:compiladoresParser.BloquesContext):
         self.ts.addContex()
@@ -84,9 +95,10 @@ class customListener (compiladoresListener):
     def exitAsignacion_variable(self, ctx:compiladoresParser.Asignacion_variableContext):
         # print(f"-> asignacion(out) {ctx.getText()}")
         name = str(ctx.getChild(0))
+        index = self.ts.getDicByKey(name)
         if ( self.ts.findByKey(name) ):
-            self.ts.ts[-1][name].initialized = True
-            self.ts.ts[-1][name].used = True
+            self.ts.ts[index][name].initialized = True
+            self.ts.ts[index][name].used = True
         else:
             print(f"ERROR: variable '{name}' no definida")
 
@@ -175,10 +187,12 @@ class customListener (compiladoresListener):
         if exist:
             if ( variable.varFunc == 'variable'):
                 print(f"ERROR: funcion '{name}' no existe")
-            elif ( not variable.implemented) :
-                print(f"ERROR: funcion '{name}' no implementada")
+            # elif ( not variable.implemented) :
+            #     print(f"ERROR: funcion '{name}' no implementada")
             elif not variable.initialized :
                 print(f"ERROR: funcion '{name}' no prototipada")
+            else:
+                variable.used = True
         else:
             print(f"ERROR: funcion '{name}' no existe")
 
