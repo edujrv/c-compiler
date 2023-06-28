@@ -2,7 +2,7 @@
 // void funcion2(int a);
 // int suma(int a, int b);
 // int suma;
-// int global = 3;
+int global = 3;
 int main() {
     // int p;
     // int y = 0;
@@ -22,10 +22,19 @@ int main() {
     // for (int i = 2; i <= 5; i++) {
     //     int x = 0;
     // }
+    int x=1;
+    int y;
     if (x>0){
+        int hola_if;
         y = 4;
     }  else {
         y = 5;
+        }
+    if (a>0){
+        int chau;
+        b = 6;
+    }  else {
+        b = 7;
         }
 
 //     int option = 2;
