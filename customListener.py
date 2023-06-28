@@ -13,13 +13,15 @@ class customListener (compiladoresListener):
     #tabla de simbolos
     ts = TablaSimbolos()
     parametros = []
-    # contextos = []
+    numero_contexto = 0
 
     def guardar(self, contexto):
-        self.f.write("{")
+        self.f.write(f"Contexto nro {self.numero_contexto}\n")
+        self.f.write(f"Nombre\tTipo\tInicializada\tUsada\tClasificacion\tImplementada\tParametros\n")
         for key in contexto:
-                self.f.write(contexto[key].toString())
-        self.f.write("}\n")
+                self.f.write(f"{contexto[key].toString()}\n")
+        self.f.write("\n\n")
+        self.numero_contexto = self.numero_contexto + 1
     
         # Enter a parse tree produced by compiladoresParser#programa.
     def enterPrograma(self, ctx:compiladoresParser.ProgramaContext):

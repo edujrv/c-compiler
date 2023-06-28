@@ -69,7 +69,8 @@ class Id:
         self.varFunc = "variable"  #indica si es una VARIABLE o una FUNCION
         
     def toString(self):
-        return f'[Name: {self.name}, Type: {self.type}, Init: {self.initialized}, Used: {self.used}, VarFun: {self.varFunc}]'
+        return f'{self.name}\t{self.type}\t{self.initialized}\t{self.used}\t{self.varFunc}'
+        # return f'[Name: {self.name}, Type: {self.type}, Init: {self.initialized}, Used: {self.used}, VarFun: {self.varFunc}]'
     
     def toStringShort(self):
         return f'[Name: {self.name}, Type: {self.type}]'
@@ -93,5 +94,6 @@ class Function(Id):
         lis = []
         for par in self.parameters:
             lis.append(par.toStringShort())
-        return f'[Name: {self.name}, Type: {self.type}, Init: {self.initialized}, Used: {self.used}, Implemented: {self.implemented}, VarFun: {self.varFunc}, Parameters: {lis}]'
+        return f'{self.name}\t{self.type}\t{self.initialized}\t{self.used}\t{self.varFunc}\t{self.implemented}\t{lis}'
+        # return f'[Name: {self.name}, Type: {self.type}, Init: {self.initialized}, Used: {self.used}, Implemented: {self.implemented}, VarFun: {self.varFunc}, Parameters: {lis}]'
         
