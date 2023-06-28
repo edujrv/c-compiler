@@ -431,7 +431,36 @@ class customVisitor (ParseTreeVisitor):
 
     # Visit a parse tree produced by compiladoresParser#bloque_while.
     def visitBloque_while(self, ctx:compiladoresParser.Bloque_whileContext):
-        return self.visitChildren(ctx)
+        """bloque_while:      WHILE PAR_ABRE condicion PAR_CIERRE bloque
+            
+            while(x>0){
+                y = 5;
+            }
+
+            lbl e0 #empieza el while
+            t0=x>0
+            beqz ****comparacion*** e1
+            ....while
+            jump e0
+            lbl e1 #sale del while
+        """
+        print(f"WHILE: {ctx.getText()}")
+        self.f.write("\nLBL e"+str(self.cont_lbl)) #etiqueta de start while
+        self.label.append(self.cont_lbl)
+        self.get_lbl_variable()
+
+        self.visitCondicion(ctx.getChild(2)) #condicion del while
+        self.f.write("\nBEQZ t"+str(self.tmp) + " to " + "e"+str(self.cont_lbl))
+        self.label.append(self.cont_lbl)
+        self.get_lbl_variable()
+
+        self.visitBloque(ctx.getChild(4)) #visita bloque del while (resto del code)
+
+        self.f.write("\nJUMP e"+str(self.label[0])) #salto a start while
+        self.label.pop(0)
+        self.f.write("\nLBL e"+str(self.label[0])) #label end while
+        self.label.pop(0)
+        # return self.visitChildren(ctx)
 
 
     # Visit a parse tree produced by compiladoresParser#bloque_do_while.

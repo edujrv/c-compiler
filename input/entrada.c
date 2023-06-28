@@ -13,25 +13,29 @@ int main() {
     // int p = x * 6 + x + y + 4 + 2 - 1 - 6 - 5 + 8 + 1;
     // // int p = x * 6 + x + y + 4 + 2 - 1 - 6 - 5 + 8 + 1 * x + y;
     // int q = x * 6 - 3;
-   
+    if (x>0){
+        int hola_if;
+        y = 4;
+    }  else {
+        y = 5;
+        }
+
+    while(z>0){
+        y = 6;
+        x = x + 1;
+    }
 
     // p = (1+2); //TODO: ESTO DA ERROR!! OJO!
     // t = 4 + 2;
     // int d = ((25+2/1)*25 + 3) - (5%1);
     // int p = 9;
-    b = suma(5,6);
+    // b = suma(5,6);
 
     // for (int i = 2; i <= 5; i++) {
     //     int x = 0;
     // }
     // int x=1;
     // int y;
-    // if (x>0){
-    //     int hola_if;
-    //     y = 4;
-    // }  else {
-    //     y = 5;
-    //     }
     // if (a>0){
     //     int chau;
     //     b = 6;
@@ -76,11 +80,11 @@ int main() {
 
 }
 
-int suma(int a, int b){
-    int h; 
-    h = 0;
-    return a + b;
-}
+// int suma(int a, int b){
+//     int h; 
+//     h = 0;
+//     return a + b;
+// }
 
 // int d = ((25+2/3)*25 + 13) - (5%2);
 // int i = 1;
