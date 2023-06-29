@@ -10,18 +10,17 @@ else:
 class customVisitor (ParseTreeVisitor):
     tmp = 0 # generador de variables temporales, t<nro>
     label = [] # generador de etiquetas, e<nro>
-    cont_lbl = 0
-    """para las funciones se usa una stack,
-    se hace push de los argumentos al stack y luego el jump a la funcion.
-    del otro lado se hace pop para sacar los args"""
-    aux_if = 'else'
+    cont_lbl = 0 # contador de las etiquetas label q van en el array
+    aux_if = 'else' # para bloque if_else
 
     def get_temp_variable(self):
+        """funcion q incrementa variable tmp"""
         self.tmp += 1
         temp = 't' + str(self.tmp)
         return temp
 
     def get_lbl_variable(self):
+        """funcion q incrementa variable cont_lbl"""
         self.cont_lbl += 1
         return self.cont_lbl
         
@@ -53,44 +52,29 @@ class customVisitor (ParseTreeVisitor):
 
     # Visit a parse tree produced by compiladoresParser#declaracion_variable.
     def visitDeclaracion_variable(self, ctx:compiladoresParser.Declaracion_variableContext):
-        print(f"Declaracion variable: {ctx.getText()}")
-    
+        # print(f"Declaracion variable: {ctx.getText()}")
         tipo = ctx.tipo().getText()
         id = ctx.ID().getText()
         asignacion = ctx.getChild(3)
         if asignacion != None:
-            print(f"AAAAAA{ctx.getText()} => {asignacion.getChildCount()}")
             if asignacion.getChildCount() == 4:
                 # FUNCION
-                print("ES FUNCION")
-                print(f"AAAAAA{ctx.getText()} => {asignacion.getChildCount()}")
                 self.f.write(f"\n{id} = ")
                 return self.visitChildren(ctx)
-
             else:
-                # self.f.write(f"\n{id}={asignacion}")
                 try:
                     # para el caso de NUMERO
                     numero = ctx.NUMERO().getText()
-                    
-                    # print(f"numero: {numero}")
                     self.f.write(f"\n{id} = {numero}")
-                    # self.visitChildren(ctx)
-                    # self.f.write(str(ctx.getChild(0)) + "=" + {numero} + "\n")
                 except:
                     # para el caso de OPERACION
                     print(f"asig_var caso Operacion")
                     self.visitChildren(ctx)
                     return self.f.write(f"\n{id} = t{self.tmp-1}")
-                # self.visitChildren(ctx)
-                # return self.f.write(f"\n{id} = t{self.tmp}")
         else:
-            # tmp = f"{id}" #creo q esto no va xq es el ID solo
             pass
         self.visitChildren(ctx)
         
-
-
 
     # Visit a parse tree produced by compiladoresParser#tipo.
     def visitTipo(self, ctx:compiladoresParser.TipoContext):
@@ -124,7 +108,7 @@ class customVisitor (ParseTreeVisitor):
 
     # Visit a parse tree produced by compiladoresParser#declaracion_funcion.
     def visitDeclaracion_funcion(self, ctx:compiladoresParser.Declaracion_funcionContext):
-        print(f"Declaracion_funcion => {ctx.getChild(1)}")
+        # print(f"Declaracion_funcion => {ctx.getChild(1)}")
 
         tmp = str(ctx.getChild(1).getText()).upper()
         self.f.write(f'\n{tmp}:')
@@ -150,63 +134,38 @@ class customVisitor (ParseTreeVisitor):
 
     # Visit a parse tree produced by compiladoresParser#asignacion_variable.
     def visitAsignacion_variable(self, ctx:compiladoresParser.Asignacion_variableContext):
-        # print(f"Asignacion variable {ctx.getText()}")
-        # try:
-        #     # para el caso de NUMERO
-        #     numero = ctx.NUMERO().getText()
-        #     # print(f"numero: {numero}")
-        #     self.f.write("\n" + ctx.getText())
-        #     # self.visitChildren(ctx)
-        #     # self.f.write(str(ctx.getChild(0)) + "=" + {numero} + "\n")
-        # except:
-        #     # para el caso de OPERACION
-        #     print(f"asig_var caso Operacion")
-        #     pass
-        # # print(f"fin asignacion variable")
-        # # self.visitChildren(ctx)
-        # # self.tmp = 0
-        # return self.visitChildren(ctx)
-        print(f"Asignacion variable: {ctx.getText()}")
-        # print(f"Asignacion variable: {ctx.getChild(2)}")
+        # print(f"Asignacion variable: {ctx.getText()}")
     
         id = ctx.getChild(0)
         asignacion = ctx.getChild(2)
         if asignacion != None:
-            print(f"AAAAAA   ASIGNACIOOOOOOOOOOOON {ctx.getText()} => {asignacion.getChildCount()}")
             if asignacion.getChildCount() == 4:
                 # FUNCION
-                print("ES FUNCION ASIGNACIOOOOOOOOOOOON")
-                print(f"AAAAAA{ctx.getText()} => {asignacion.getChildCount()}")
                 self.f.write(f"\n{id} = ")
                 return self.visitChildren(ctx)
-
-            # elif asignacion.getChildCount() == 3:
             else:
                 try:
                     # para el caso de NUMERO
-                    print(f"asig_var caso Numero")
                     numero = ctx.NUMERO().getText()
                     self.f.write(f"\n{id} = {numero}")
                 except:
                     # para el caso de OPERACION
-                    print(f"asig_var caso Operacion")
                     self.visitChildren(ctx)
                     return self.f.write(f"\n{id} = t{self.tmp-1}")
         else:
-            # tmp = f"{id}" #creo q esto no va xq es el ID solo
             pass
         return self.visitChildren(ctx)
 
 
     # Visit a parse tree produced by compiladoresParser#bloque.
     def visitBloque(self, ctx:compiladoresParser.BloqueContext):
-        print(f"Bloque")
+        # print(f"Bloque")
         self.visitChildren(ctx)
-        # self.f.write("LBL bloque e1" + "\n")
+
 
     # Visit a parse tree produced by compiladoresParser#return_func.
     def visitReturn_func(self, ctx:compiladoresParser.Return_funcContext):
-        print(f"RETURN: {ctx.getText()}")
+        # print(f"RETURN: {ctx.getText()}")
         try:
             #caso operacion
             self.visitChildren(ctx)
@@ -241,7 +200,7 @@ class customVisitor (ParseTreeVisitor):
 
     # Visit a parse tree produced by compiladoresParser#condicion.
     def visitCondicion(self, ctx:compiladoresParser.CondicionContext):
-        print(f"Condicion {ctx.getText()}")
+        # print(f"Condicion {ctx.getText()}")
         try:
             # para el caso de NUMERO
             numero = ctx.NUMERO().getText()
@@ -265,8 +224,7 @@ class customVisitor (ParseTreeVisitor):
     # Visit a parse tree produced by compiladoresParser#bloque_if.
     def visitBloque_if(self, ctx:compiladoresParser.Bloque_ifContext):
         if ( ctx.getText() != 'else' and self.aux_if == 'if'):
-            print(f"bloque IFFF, de ifelse: {ctx.getText()}")
-            print(f"visita child2, condicion")
+            # print(f"bloque IFFF, de ifelse: {ctx.getText()}")
             self.visitCondicion(ctx.getChild(2))
             self.f.write("\nBEQZ t"+str(self.tmp) + " to " + "e"+str(self.cont_lbl))
             self.label.append(self.cont_lbl)
@@ -275,8 +233,7 @@ class customVisitor (ParseTreeVisitor):
             self.visitBloque(ctx.getChild(4))
 
         elif ( ctx.getText() != 'else' and self.aux_if == 'else' ):
-            print(f"bloque IF SOLO: {ctx.getText()}")
-            print(f"visita child2, condicion")
+            # print(f"bloque IF SOLO: {ctx.getText()}")
             self.visitCondicion(ctx.getChild(2))
             self.f.write("\nBEQZ t"+str(self.tmp) + " to " + "e"+str(self.cont_lbl))
             self.label.append(self.cont_lbl)
@@ -284,8 +241,8 @@ class customVisitor (ParseTreeVisitor):
             self.visitBloque(ctx.getChild(4))
             self.f.write("\nLBL e"+str(self.label[0]))
             self.label.pop(0)
-            print(f"label: {self.label}")
-            print(f"contador_lbl: {self.cont_lbl}")
+            # print(f"label: {self.label}")
+            # print(f"contador_lbl: {self.cont_lbl}")
        
         if ( ctx.getText() == 'else'):
             self.aux_if = 'if'
@@ -315,51 +272,38 @@ class customVisitor (ParseTreeVisitor):
         y = t4
         lbl e1
         """
-        print(f"IF_ELSE: {ctx.getText()}")
-        print(f"visita child0, if")
+        # print(f"IF_ELSE: {ctx.getText()}")
         self.visitBloque_if(ctx.getChild(1)) #mando ELSE a if
         self.visitBloque_if(ctx.getChild(0)) # mando a IF sus cosas
-        # self.f.write("BEQZ t"+str(self.tmp) + " to " + "e"+str(self.cont_lbl) + "\n")
+
         self.f.write("\nJUMP e"+str(self.cont_lbl))
         self.label.append(self.cont_lbl)
         self.get_lbl_variable()
+
         self.f.write("\nLBL e"+str(self.label[0]))
         self.label.pop(0)
-        print(f"visita child2, bloque de else")
+
         self.visitChildren(ctx.getChild(2)) # manda a bloque else
         self.f.write("\nLBL e"+str(self.label[0]))
         self.label.pop(0)
-        print(f"label: {self.label}")
-        print(f"contador_lbl: {self.cont_lbl}")
-        # return self.visitChildren(ctx)
+
+        # print(f"label: {self.label}")
+        # print(f"contador_lbl: {self.cont_lbl}")
 
 
     # Visit a parse tree produced by compiladoresParser#bloque_operacional.
     def visitBloque_operacional(self, ctx:compiladoresParser.Bloque_operacionalContext):
-        print(f"bloque operacional: {ctx.getText()}")
+        # print(f"bloque operacional: {ctx.getText()}")
         # operacion = ctx.operacion().getText()
         # print(f"op: {operacion}")
         return self.visitChildren(ctx)
 
 
-    # Visit a parse tree produced by compiladoresParser#operacion.
-    # def visitOperacion(self, ctx:compiladoresParser.OperacionContext):
-
-    #     if ctx.getChild(1) == "++":
-    #         aux = f"{ctx.getChild(0)} = {ctx.getChild(0)} + 1"
-    #     elif ctx.getChild(1) == "--":
-    #         aux = f"{ctx.getChild(0)} = {ctx.getChild(0)} - 1"
-        
-
-    #     if ctx.getChild()
-
-    #     return self.visitChildren(ctx)
     def visitOperacion(self, ctx:compiladoresParser.OperacionContext):
         """
         <<endrada>>
         int x = 0;
         int y = 5;
-
         x = y / 5 + y * 10;
 
         <<tac>>
@@ -370,10 +314,7 @@ class customVisitor (ParseTreeVisitor):
         t2 = t0 + t1
         x = t2
 
-
-
         p = (x * 6) + x + y;
-
         p = bloque_operacional + x + y + 6
 
         t1 = x  * 6
@@ -386,16 +327,8 @@ class customVisitor (ParseTreeVisitor):
         operando = ctx.getChild(1).getText()
 
         resultado = left operando right
-
-
-
         """
-        print(f"operacion: {ctx.getText()}")
-
-        # bloque_op = ctx.bloque_operacional()
-        # print(f"bloqueee: {bloque_op}")
-        # if (bloque_op == []):
-        #     print("bloque op VACIO")
+        # print(f"operacion: {ctx.getText()}")
        
         contador = 0
         aux = ctx.getChild(0) # left_operand
@@ -426,13 +359,8 @@ class customVisitor (ParseTreeVisitor):
                     self.tmp = self.tmp + 1
         
         temporales.clear();
-
-        # var = self.visitChildren(ctx)
-        # print(f"AAAAAAAAAAAAAAAAAAA{var}")
-        # try:
         return result
-        # except:
-            # pass
+
 
     # Visit a parse tree produced by compiladoresParser#bloque_for.
     def visitBloque_for(self, ctx:compiladoresParser.Bloque_forContext):
@@ -451,7 +379,7 @@ class customVisitor (ParseTreeVisitor):
             jump e0
             lbl e1
         """
-        print(f"FOR: {ctx.getText()}")
+        # print(f"FOR: {ctx.getText()}")
         #asignacion o declaracion variable
         try:
             self.visitDeclaracion_variable(ctx.getChild(2))
@@ -492,7 +420,7 @@ class customVisitor (ParseTreeVisitor):
             jump e0
             lbl e1 #sale del while
         """
-        print(f"WHILE: {ctx.getText()}")
+        # print(f"WHILE: {ctx.getText()}")
         self.f.write("\nLBL e"+str(self.cont_lbl)) #etiqueta de start while
         self.label.append(self.cont_lbl)
         self.get_lbl_variable()
@@ -546,6 +474,9 @@ x = x+1
 jmp e0
 lbl e1
 """
+"""para las funciones se usa una stack,
+se hace push de los argumentos al stack y luego el jump a la funcion.
+del otro lado se hace pop para sacar los args"""
 """
 <<entrada>>
 int calcular (int x, int y){
